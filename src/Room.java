@@ -1,5 +1,5 @@
 
-public class Room {
+public abstract class Room {
 	private static int numRooms = 0;
 	public int sizeX, sizeY, numDoors;
 	public String[] doorPosition;
@@ -8,7 +8,6 @@ public class Room {
 	public Room() {
 		this(0, 0, 0, null);
 	}
-
 	
 	public Room(int sizeX, int sizeY, int numDoors, String[] doorPosition) {
 		super();
@@ -27,15 +26,16 @@ public class Room {
 		}
 	}
 	
-	public static void main(String [] Args) {
-		Room test = new Room(5, 5, 0, null);
-		for (int i = 0; i < test.sizeX; i++) {
-			for (int j = 0; j < test.sizeY; j++) {
-				System.out.print(test.layout[i][j] + " ");
-			}
-			System.out.print("\n");
-		}
+	public void updateNumRooms() {
+		setNumRooms(getNumRooms() + 1);
 	}
-	
+
+	public static int getNumRooms() {
+		return numRooms;
+	}
+
+	public static void setNumRooms(int numRooms) {
+		Room.numRooms = numRooms;
+	}
 	
 }
