@@ -1,19 +1,21 @@
 
 public abstract class Character {
 	public char icon;
+	public String name;
 	public int hp, mp, posX, posY;
 	
 	public Character() {
-		this(' ', 0, 0, 0, 0);
+		this(' ', 0, 0, 0, 0, "no name");
 	}
 	
-	public Character(char icon, int hp, int mp, int posX, int posY) {
+	public Character(char icon, int hp, int mp, int posX, int posY, String name) {
 		super();
 		this.icon = icon;
 		this.hp = hp;
 		this.mp = mp;
 		this.posX = posX;
 		this.posY = posY;
+		this.name = name;
 	}
 
 	public char getIcon() {
