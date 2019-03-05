@@ -19,6 +19,16 @@ public class Room {
 			this.doorPosition[i] = doorPosition[i];
 		}
 		this.layout = new char[this.sizeX][this.sizeY];
+		this.setLayout();
+	}
+	
+	public void addDoors() {
+		for (int i = 0; i < numDoors; i++) {
+			this.layout[this.doorPosition[i] % 10][this.doorPosition[i] / 10] = ' ';
+		}
+	}
+	
+	public void setLayout() {
 		for (int i = 0; i < sizeX; i++) {
 			for (int j = 0; j < sizeY; j++) {
 				if (i == 0 || j == 0 || i == sizeX - 1 || j == sizeY - 1)
@@ -27,12 +37,10 @@ public class Room {
 					this.layout[i][j] = '*';
 			}
 		}
-		for (int i = 0; i < numDoors; i++) {
-			this.layout[this.doorPosition[i] / 10][this.doorPosition[i] % 10] = ' ';
-		}
+		this.addDoors();
 	}
 	
-	public void updateNumRooms() {
+	public static void updateNumRooms() {
 		setNumRooms(getNumRooms() + 1);
 	}
 
@@ -42,17 +50,5 @@ public class Room {
 
 	public static void setNumRooms(int numRooms) {
 		Room.numRooms = numRooms;
-	}
-	
-	
-	public static void main(String[] Args) {
-		int[] doors = {01, 04, 11};
-		Room test = new Room(5, 5, 2, doors);
-		for (int i = 0; i < test.sizeX; i++) {
-			for(int j = 0; j < test.sizeY; j++) {
-				System.out.print(test.layout[i][j] + " ");
-			}
-			System.out.print("\n");
-		}
 	}
 }
