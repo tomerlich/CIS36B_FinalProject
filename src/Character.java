@@ -1,8 +1,10 @@
+import java.util.ArrayList;
 
-public abstract class Character {
+public class Character {
 	public char icon;
 	public String name;
-	public int hp, mp, posX, posY;
+	private int hp, mp, posX, posY;
+	private ArrayList<Item> inventory;
 	
 	public Character() {
 		this(' ', 0, 0, 0, 0, "no name");
@@ -16,6 +18,15 @@ public abstract class Character {
 		this.posX = posX;
 		this.posY = posY;
 		this.name = name;
+		this.inventory = new ArrayList<Item>();
+	}
+
+	public ArrayList<Item> getInventory() {
+		return inventory;
+	}
+
+	public void setInventory(ArrayList<Item> inventory) {
+		this.inventory = inventory;
 	}
 
 	public char getIcon() {

@@ -40,6 +40,19 @@ public class Room {
 		this.addDoors();
 	}
 	
+	public char[][] getLayout() {
+		return this.layout;
+	}
+	
+	public void displayRoom() {
+		for (int i = 0; i < this.sizeX; i++) {
+			for (int j = 0; j < this.sizeY; j++) {
+				System.out.print(this.layout[i][j] + " ");
+			}
+			System.out.print("\n");
+		}
+	}
+	
 	public static void updateNumRooms() {
 		setNumRooms(getNumRooms() + 1);
 	}
