@@ -10,13 +10,14 @@ import javafx.scene.control.TextArea;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.text.Font;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 
 public class Game extends Application{
 
 	Button button;
-	TextArea map;
+	Text map;
 	Room testRoom;
 	Character testPlayer;
 	
@@ -39,19 +40,19 @@ public class Game extends Application{
 		button = new Button("Click me");
 		button.setOnAction(e -> this.updateMap());
 		
-		testRoom = new Room(5,6,0,null);
+		testRoom = new Room(10,10,0,null);
 		
-		map = new TextArea();
-		map.setEditable(false);
+		map = new Text();
+		//map.setEditable(false);
 		map.setFont(new Font("Lucida Console", 18));
 		for(int i = 0; i < testRoom.sizeX; i++) {
 			for (int j = 0; j < testRoom.sizeY; j++) {
-				map.appendText(String.valueOf(testRoom.getLayout()[i][j]));
+				map.setText(map.getText() + testRoom.getLayout()[i][j]);
 			}
-			map.appendText("\n");
+			map.setText(map.getText() + "\n");
 		}
 		
-		GridPane.setConstraints(map, 1, 0);
+		GridPane.setConstraints(map, 0, 0);
 		GridPane.setConstraints(button, 1, 1);
 		
 		GridPane layout = new GridPane();
@@ -69,7 +70,5 @@ public class Game extends Application{
 	
 	public void updateMap() {
 		testPlayer.moveRight();
-		map.insertText(testPlayer.calculatePos(), String.valueOf(testPlayer.getIcon()));
-		map.deleteText(testPlayer.calculatePos() - 1, testPlayer.calculatePos());
 	}
 }

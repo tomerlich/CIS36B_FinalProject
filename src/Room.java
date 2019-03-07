@@ -34,7 +34,7 @@ public class Room {
 				if (i == 0 || j == 0 || i == sizeX - 1 || j == sizeY - 1)
 					this.layout[i][j] = '#';
 				else
-					this.layout[i][j] = '*';
+					this.layout[i][j] = ' ';
 			}
 		}
 		this.addDoors();
