@@ -83,5 +83,10 @@ public class Character {
 	
 	public void moveRight() {
 		this.setPosX(this.getPosX() + 1);
+		System.out.println("position x " + this.getPosX() + " position y " + this.getPosY());
+	}
+
+	public int calculatePos() {
+		return (this.posX * this.posY) + (this.posY - 1);
 	}
 }
