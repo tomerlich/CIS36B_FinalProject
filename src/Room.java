@@ -64,4 +64,12 @@ public class Room {
 	public static void setNumRooms(int numRooms) {
 		Room.numRooms = numRooms;
 	}
+	
+	public void placeObject(Object o) {
+		this.setLayout();
+		if (o instanceof Character) {
+			Character c = (Character) o;
+			this.layout[c.getPosX()][c.getPosY()] = c.icon;
+		}
+	}
 }
