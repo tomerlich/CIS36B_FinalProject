@@ -2,21 +2,127 @@ import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
-import javafx.scene.shape.Circle;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 
 public class Game extends Application{
+	public Button getRightButton() {
+		return rightButton;
+	}
+
+	public void setRightButton(Button rightButton) {
+		this.rightButton = rightButton;
+	}
+
+	public Button getDownButton() {
+		return downButton;
+	}
+
+	public void setDownButton(Button downButton) {
+		this.downButton = downButton;
+	}
+
+	public Button getLeftButton() {
+		return leftButton;
+	}
+
+	public void setLeftButton(Button leftButton) {
+		this.leftButton = leftButton;
+	}
+
+	public Button getUpButton() {
+		return upButton;
+	}
+
+	public void setUpButton(Button upButton) {
+		this.upButton = upButton;
+	}
+
+	public Text[][] getMap() {
+		return map;
+	}
+
+	public void setMap(Text[][] map) {
+		this.map = map;
+	}
+
+	public Text getLogText() {
+		return logText;
+	}
+
+	public void setLogText(Text logText) {
+		this.logText = logText;
+	}
+
+	public Room getTestRoom() {
+		return testRoom;
+	}
+
+	public void setTestRoom(Room testRoom) {
+		this.testRoom = testRoom;
+	}
+
+	public Character getTestPlayer() {
+		return testPlayer;
+	}
+
+	public void setTestPlayer(Character testPlayer) {
+		this.testPlayer = testPlayer;
+	}
+
+	public GridPane getMapLayout() {
+		return mapLayout;
+	}
+
+	public void setMapLayout(GridPane mapLayout) {
+		this.mapLayout = mapLayout;
+	}
+
+	public GridPane getControlLayout() {
+		return controlLayout;
+	}
+
+	public void setControlLayout(GridPane controlLayout) {
+		this.controlLayout = controlLayout;
+	}
+
+	public GridPane getSceneLayout() {
+		return sceneLayout;
+	}
+
+	public void setSceneLayout(GridPane sceneLayout) {
+		this.sceneLayout = sceneLayout;
+	}
+
+	public ScrollPane getInfoLayout() {
+		return infoLayout;
+	}
+
+	public void setInfoLayout(ScrollPane infoLayout) {
+		this.infoLayout = infoLayout;
+	}
+
+	public VBox getMenuLayout() {
+		return menuLayout;
+	}
+
+	public void setMenuLayout(VBox menuLayout) {
+		this.menuLayout = menuLayout;
+	}
+
 	Button rightButton, downButton, leftButton, upButton;
 	Text[][] map;
+	Text logText;
 	Room testRoom;
 	Character testPlayer;
 	GridPane mapLayout, controlLayout, sceneLayout;
-	VBox infoLayout, menuLayout;
+	ScrollPane infoLayout;
+	VBox menuLayout;
 	
 	public static void main(String[] Args) {
 		launch(Args);
@@ -28,11 +134,12 @@ public class Game extends Application{
 		mapLayout = new GridPane();
 		controlLayout = new GridPane();
 		sceneLayout = new GridPane();
-		infoLayout = new VBox();
+		infoLayout = new ScrollPane();
 		menuLayout = new VBox();
+		logText = new Text("Action Log:");
 		
-		infoLayout.getChildren().add(new Circle(0,0, 50));
 		menuLayout.getChildren().add(new Text("this is another hello"));
+		infoLayout.setContent(logText);
 		
 		controlLayout.setPadding(new Insets(10,10,10,10));
 		controlLayout.setVgap(10);
@@ -117,6 +224,8 @@ public class Game extends Application{
 			}else
 				testPlayer.setPosX(testPlayer.getPrevX());
 			map[testPlayer.getPosX()][testPlayer.getPosY()].setText(String.valueOf(testPlayer.getIcon()));
+			logText.setText(logText.getText() + "\nYou cant go through a wall!!");
+			infoLayout.setContent(logText);
 		}
 		
 	}
