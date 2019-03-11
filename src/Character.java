@@ -3,7 +3,7 @@ import java.util.ArrayList;
 public class Character {
 	public char icon;
 	public String name;
-	private int hp, mp, posX, posY;
+	private int hp, mp, posX, posY, prevX, prevY;
 	private ArrayList<Item> inventory;
 	
 	public Character() {
@@ -16,9 +16,19 @@ public class Character {
 		this.hp = hp;
 		this.mp = mp;
 		this.posX = posX;
+		this.prevX = posX;
 		this.posY = posY;
+		this.prevY = posY;
 		this.name = name;
 		this.inventory = new ArrayList<Item>();
+	}
+
+	public int getPrevX() {
+		return prevX;
+	}
+
+	public int getPrevY() {
+		return prevY;
 	}
 
 	public ArrayList<Item> getInventory() {
@@ -58,6 +68,7 @@ public class Character {
 	}
 
 	public void setPosX(int posX) {
+		prevX = this.posX;
 		this.posX = posX;
 	}
 
@@ -66,24 +77,28 @@ public class Character {
 	}
 
 	public void setPosY(int posY) {
+		prevY = this.posY;
 		this.posY = posY;
 	}
 	
 	public void moveUP() {
+		this.setPosX(this.getPosX());
 		this.setPosY(this.getPosY() - 1);
 	}
 	
 	public void moveDown() {
+		this.setPosX(this.getPosX());
 		this.setPosY(this.getPosY() + 1);
 	}
 	
 	public void moveLeft() {
+		this.setPosY(this.getPosY());
 		this.setPosX(this.getPosX() - 1);
 	}
 	
 	public void moveRight() {
+		this.setPosY(this.getPosY());
 		this.setPosX(this.getPosX() + 1);
-		//System.out.println("position x " + this.getPosX() + " position y " + this.getPosY());
 	}
 
 	public int calculatePos() {

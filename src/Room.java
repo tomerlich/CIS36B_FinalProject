@@ -65,10 +65,12 @@ public class Room {
 		Room.numRooms = numRooms;
 	}
 	
-	public void placeObject(Object o) {
+	public void placeObject(Object o) throws HitWallException{
 		this.setLayout();
 		if (o instanceof Character) {
 			Character c = (Character) o;
+			if (this.layout[c.getPosX()][c.getPosY()] == '#')
+				throw new HitWallException("you hit a wall");
 			this.layout[c.getPosX()][c.getPosY()] = c.icon;
 		}
 	}

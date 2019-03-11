@@ -16,7 +16,7 @@ public class Game extends Application{
 	Room testRoom;
 	Character testPlayer;
 	GridPane mapLayout, controlLayout, sceneLayout;
-	VBox infoLayout, otherLayout;
+	VBox infoLayout, menuLayout;
 	
 	public static void main(String[] Args) {
 		launch(Args);
@@ -29,10 +29,10 @@ public class Game extends Application{
 		controlLayout = new GridPane();
 		sceneLayout = new GridPane();
 		infoLayout = new VBox();
-		otherLayout = new VBox();
+		menuLayout = new VBox();
 		
 		infoLayout.getChildren().add(new Circle(0,0, 50));
-		otherLayout.getChildren().add(new Text("this is another hello"));
+		menuLayout.getChildren().add(new Text("this is another hello"));
 		
 		controlLayout.setPadding(new Insets(10,10,10,10));
 		controlLayout.setVgap(10);
@@ -46,10 +46,7 @@ public class Game extends Application{
 		mapLayout.setVgap(10);
 		mapLayout.setHgap(10);
 		
-		testPlayer = new Character();
-		testPlayer.setIcon('@');
-		testPlayer.setPosX(1);
-		testPlayer.setPosY(1);
+		testPlayer = new Character('@', 0, 0, 1, 1, "name");
 		
 		upButton = new Button("^");
 		upButton.setOnAction(e -> {
@@ -92,10 +89,10 @@ public class Game extends Application{
 		
 		GridPane.setConstraints(controlLayout, 1, 0);
 		GridPane.setConstraints(infoLayout, 0, 1);
-		GridPane.setConstraints(otherLayout, 1, 1);
+		GridPane.setConstraints(menuLayout, 1, 1);
 		controlLayout.getChildren().addAll(upButton, downButton, leftButton, rightButton);
 		
-		sceneLayout.getChildren().addAll(mapLayout, controlLayout, infoLayout, otherLayout);
+		sceneLayout.getChildren().addAll(mapLayout, controlLayout, infoLayout, menuLayout);
 		
 		Scene scene = new Scene(sceneLayout, 500, 500);
 		arg0.setScene(scene);
@@ -103,15 +100,24 @@ public class Game extends Application{
 	}
 	
 	public void setMap() {
-		testRoom.placeObject(testPlayer);
-		for(int i = 0; i < testRoom.sizeX; i++) {
-			for (int j = 0; j < testRoom.sizeY; j++) {
-				map[i][j] = new Text();
-				map[i][j].setFont(new Font("Lucida Console", 18));
-				map[i][j].setText(String.valueOf(testRoom.getLayout()[i][j]));
-				GridPane.setConstraints(map[i][j], i, j);
-				mapLayout.getChildren().add(map[i][j]);
+		try {
+			testRoom.placeObject(testPlayer);
+			for(int i = 0; i < testRoom.sizeX; i++) {
+				for (int j = 0; j < testRoom.sizeY; j++) {
+					map[i][j] = new Text();
+					map[i][j].setFont(new Font("Lucida Console", 18));
+					map[i][j].setText(String.valueOf(testRoom.getLayout()[i][j]));
+					GridPane.setConstraints(map[i][j], i, j);
+					mapLayout.getChildren().add(map[i][j]);
+				}
 			}
+		} catch (HitWallException e) {
+			if (testPlayer.getPosX() == testPlayer.getPrevX()) {
+				testPlayer.setPosY(testPlayer.getPrevY());
+			}else
+				testPlayer.setPosX(testPlayer.getPrevX());
+			map[testPlayer.getPosX()][testPlayer.getPosY()].setText(String.valueOf(testPlayer.getIcon()));
 		}
+		
 	}
 }
