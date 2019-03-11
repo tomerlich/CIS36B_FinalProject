@@ -125,7 +125,6 @@ public class Game extends Application{
 		this.menuLayout = menuLayout;
 	}
 
-	
 	public static void main(String[] Args) {
 		launch(Args);
 	}
