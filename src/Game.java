@@ -1,5 +1,6 @@
 import javafx.application.Application;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;
@@ -134,12 +135,15 @@ public class Game extends Application{
 		arg0.setTitle("Angband 2019");
 		mapLayout = new GridPane();
 		controlLayout = new GridPane();
+		controlLayout.setAlignment(Pos.CENTER);
 		sceneLayout = new GridPane();
 		infoLayout = new ScrollPane();
 		menuLayout = new VBox();
 		logText = new Text("Action Log:");
+		sceneLayout.setAlignment(Pos.CENTER);
 		
 		menuLayout.getChildren().add(new Text("this is another hello"));
+		infoLayout.setPrefViewportHeight(1000);
 		infoLayout.setContent(logText);
 		
 		controlLayout.setPadding(new Insets(10,10,10,10));
