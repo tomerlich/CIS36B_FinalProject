@@ -11,6 +11,15 @@ import javafx.stage.Stage;
 
 
 public class Game extends Application{
+	private Button rightButton, downButton, leftButton, upButton;
+	private Text[][] map;
+	private Text logText;
+	private Room testRoom;
+	private Character testPlayer;
+	private GridPane mapLayout, controlLayout, sceneLayout;
+	private ScrollPane infoLayout;
+	private VBox menuLayout;
+	
 	public Button getRightButton() {
 		return rightButton;
 	}
@@ -115,14 +124,6 @@ public class Game extends Application{
 		this.menuLayout = menuLayout;
 	}
 
-	Button rightButton, downButton, leftButton, upButton;
-	Text[][] map;
-	Text logText;
-	Room testRoom;
-	Character testPlayer;
-	GridPane mapLayout, controlLayout, sceneLayout;
-	ScrollPane infoLayout;
-	VBox menuLayout;
 	
 	public static void main(String[] Args) {
 		launch(Args);
