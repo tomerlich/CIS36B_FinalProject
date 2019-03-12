@@ -127,7 +127,8 @@ public class Game extends Application{
 		sceneLayout.setAlignment(Pos.CENTER);
 		
 		menuLayout.getChildren().add(new Text("this is another hello"));
-		infoLayout.setPrefViewportHeight(1000);
+		infoLayout.setPrefViewportHeight(100);
+		infoLayout.setPrefViewportWidth(150);
 		infoLayout.setContent(logText);
 		
 		controlLayout.setPadding(new Insets(10,10,10,10));
@@ -179,8 +180,14 @@ public class Game extends Application{
 		
 		testRoom = new Room[5];
 		for(int i = 0; i < testRoom.length; i++) {
-			testRoom[i] = new Room(5, 5, 2, new int[]{ 01, 44});
-			testRoom[i].placeObject(testPlayer);
+			
+			if(i != 0) {
+				testRoom[i] = new Room(10, 10, 0, null);
+				testRoom[i].placeObject(testPlayer);
+			}else {
+				testRoom[i] = new Room(5, 5, 1, new int[]{01});
+				testRoom[i].placeObject(testPlayer);
+			}
 		}
 		
 		map = new Text[testRoom.length][][];
@@ -221,7 +228,24 @@ public class Game extends Application{
 			map[currentRoom][testPlayer.getPosX()][testPlayer.getPosY()].setText(String.valueOf(testPlayer.getIcon()));
 			logText.setText(logText.getText() + "\nYou cant go through a wall!!");
 			infoLayout.setContent(logText);
+		} catch (EnterNewRoomException e) {
+			testPlayer.setPosX(1);
+			testPlayer.setPosY(1);
+			logText.setText(logText.getText() + "\nYou're in the next Room");
+			loadRoom();
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
 		
+	}
+	
+	public void loadRoom() {
+		for (int i = 0; i < testRoom[currentRoom].sizeX; i++) {
+			for (int j = 0; j < testRoom[currentRoom].sizeY; j++) {
+				map[currentRoom][i][j].setText(String.valueOf(' '));
+			}
+		}
+		currentRoom++;
+		this.setMap();
 	}
 }

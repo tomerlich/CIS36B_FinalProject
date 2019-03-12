@@ -68,13 +68,25 @@ public class Room {
 		Room.numRooms = numRooms;
 	}
 	
-	public void placeObject(Object o) throws HitWallException{
+	public void placeObject(Object o) throws Exception{
 		this.setLayout();
 		if (o instanceof Character) {
 			Character c = (Character) o;
 			if (this.layout[c.getPosX()][c.getPosY()] == '#')
 				throw new HitWallException("you hit a wall");
+			if (this.checkDoor(c.getPosX(), c.getPosY()))
+				throw new EnterNewRoomException("entered a new room");
 			this.layout[c.getPosX()][c.getPosY()] = c.icon;
 		}
+	}
+
+	private boolean checkDoor(int posX, int posY) {
+		int position = (posX * 10) + posY;
+		for (int i = 0; i < this.numDoors; i++) {
+			if (this.doorPosition[i] == position) {
+				return true;
+			}
+		}
+		return false;
 	}
 }
