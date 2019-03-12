@@ -13,13 +13,14 @@ import javafx.stage.Stage;
 
 public class Game extends Application{
 	private Button rightButton, downButton, leftButton, upButton;
-	private Text[][] map;
+	private Text[][][] map;
 	private Text logText;
-	private Room testRoom;
+	private Room[] testRoom;
 	private Character testPlayer;
 	private GridPane mapLayout, controlLayout, sceneLayout;
 	private ScrollPane infoLayout;
 	private VBox menuLayout;
+	private int currentRoom;
 	
 	public Button getRightButton() {
 		return rightButton;
@@ -53,28 +54,12 @@ public class Game extends Application{
 		this.upButton = upButton;
 	}
 
-	public Text[][] getMap() {
-		return map;
-	}
-
-	public void setMap(Text[][] map) {
-		this.map = map;
-	}
-
 	public Text getLogText() {
 		return logText;
 	}
 
 	public void setLogText(Text logText) {
 		this.logText = logText;
-	}
-
-	public Room getTestRoom() {
-		return testRoom;
-	}
-
-	public void setTestRoom(Room testRoom) {
-		this.testRoom = testRoom;
 	}
 
 	public Character getTestPlayer() {
@@ -161,28 +146,28 @@ public class Game extends Application{
 		
 		upButton = new Button("^");
 		upButton.setOnAction(e -> {
-			map[testPlayer.getPosX()][testPlayer.getPosY()].setText(" ");
+			map[currentRoom][testPlayer.getPosX()][testPlayer.getPosY()].setText(" ");
 			testPlayer.moveUP();
 			this.setMap();
 			});
 		
 		downButton = new Button("v");
 		downButton.setOnAction(e -> {
-			map[testPlayer.getPosX()][testPlayer.getPosY()].setText(" ");
+			map[currentRoom][testPlayer.getPosX()][testPlayer.getPosY()].setText(" ");
 			testPlayer.moveDown();
 			this.setMap();
 			});
 		
 		leftButton = new Button("<");
 		leftButton.setOnAction(e -> {
-			map[testPlayer.getPosX()][testPlayer.getPosY()].setText(" ");
+			map[currentRoom][testPlayer.getPosX()][testPlayer.getPosY()].setText(" ");
 			testPlayer.moveLeft();
 			this.setMap();
 			});
 		
 		rightButton = new Button(">");
 		rightButton.setOnAction(e -> {
-			map[testPlayer.getPosX()][testPlayer.getPosY()].setText(" ");
+			map[currentRoom][testPlayer.getPosX()][testPlayer.getPosY()].setText(" ");
 			testPlayer.moveRight();
 			this.setMap();
 			});
@@ -192,10 +177,16 @@ public class Game extends Application{
 		GridPane.setConstraints(leftButton, 0, 1);
 		GridPane.setConstraints(rightButton, 2, 1);
 		
-		testRoom = new Room(10,10,0,null);
-		testRoom.placeObject(testPlayer);
+		testRoom = new Room[5];
+		for(int i = 0; i < testRoom.length; i++) {
+			testRoom[i] = new Room(10,10,0,null);
+			testRoom[i].placeObject(testPlayer);
+		}
 		
-		map = new Text[testRoom.sizeX][testRoom.sizeY];
+		map = new Text[testRoom.length][][];
+		for (int i = 0; i < map.length; i++) {
+			map[i] = new Text[testRoom[i].sizeX][testRoom[i].sizeY];
+		}
 		this.setMap();
 		
 		GridPane.setConstraints(controlLayout, 1, 0);
@@ -212,14 +203,14 @@ public class Game extends Application{
 	
 	public void setMap() {
 		try {
-			testRoom.placeObject(testPlayer);
-			for(int i = 0; i < testRoom.sizeX; i++) {
-				for (int j = 0; j < testRoom.sizeY; j++) {
-					map[i][j] = new Text();
-					map[i][j].setFont(new Font("Lucida Console", 18));
-					map[i][j].setText(String.valueOf(testRoom.getLayout()[i][j]));
-					GridPane.setConstraints(map[i][j], i, j);
-					mapLayout.getChildren().add(map[i][j]);
+			testRoom[currentRoom].placeObject(testPlayer);
+			for(int i = 0; i < testRoom[currentRoom].sizeX; i++) {
+				for (int j = 0; j < testRoom[currentRoom].sizeY; j++) {
+					map[currentRoom][i][j] = new Text();
+					map[currentRoom][i][j].setFont(new Font("Lucida Console", 18));
+					map[currentRoom][i][j].setText(String.valueOf(testRoom[currentRoom].getLayout()[i][j]));
+					GridPane.setConstraints(map[currentRoom][i][j], i, j);
+					mapLayout.getChildren().add(map[currentRoom][i][j]);
 				}
 			}
 		} catch (HitWallException e) {
@@ -227,7 +218,7 @@ public class Game extends Application{
 				testPlayer.setPosY(testPlayer.getPrevY());
 			}else
 				testPlayer.setPosX(testPlayer.getPrevX());
-			map[testPlayer.getPosX()][testPlayer.getPosY()].setText(String.valueOf(testPlayer.getIcon()));
+			map[currentRoom][testPlayer.getPosX()][testPlayer.getPosY()].setText(String.valueOf(testPlayer.getIcon()));
 			logText.setText(logText.getText() + "\nYou cant go through a wall!!");
 			infoLayout.setContent(logText);
 		}
