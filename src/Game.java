@@ -179,7 +179,7 @@ public class Game extends Application{
 		
 		testRoom = new Room[5];
 		for(int i = 0; i < testRoom.length; i++) {
-			testRoom[i] = new Room(10,10,0,null);
+			testRoom[i] = new Room(5, 5, 2, new int[]{ 01, 44});
 			testRoom[i].placeObject(testPlayer);
 		}
 		

@@ -24,7 +24,10 @@ public class Room {
 	
 	public void addDoors() {
 		for (int i = 0; i < numDoors; i++) {
+			if(this.doorPosition[i] > 9)
 			this.layout[this.doorPosition[i] % 10][this.doorPosition[i] / 10] = ' ';
+			else
+				this.layout[0][this.doorPosition[i]] = ' ';
 		}
 	}
 	
