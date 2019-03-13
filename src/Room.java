@@ -1,23 +1,37 @@
 
 public class Room {
+	public static int getCurrentRoomX() {
+		return currentRoomX;
+	}
+
+	public static void setCurrentRoomX(int currentRoomX) {
+		Room.currentRoomX = currentRoomX;
+	}
+
+	public static int getCurrentRoomY() {
+		return currentRoomY;
+	}
+
+	public static void setCurrentRoomY(int currentRoomY) {
+		Room.currentRoomY = currentRoomY;
+	}
+
 	private static int numRooms = 0;
+
+	private static int currentRoomX = 1, currentRoomY = 1;
 	public int sizeX, sizeY, numDoors;
-	public int[] doorPosition;
+	public int[] doorPosition, adjRooms;
 	public char[][] layout;
 	
 	public Room() {
-		this(0, 0, 0, null);
+		this(0, 0);
 	}
 	
-	public Room(int sizeX, int sizeY, int numDoors, int[] doorPosition) {
+	public Room(int sizeX, int sizeY) {
 		super();
 		this.sizeX = sizeX;
 		this.sizeY = sizeY;
-		this.numDoors = numDoors;
-		this.doorPosition = new int[this.numDoors];
-		for (int i = 0; i < numDoors; i++) {
-			this.doorPosition[i] = doorPosition[i];
-		}
+		this.adjRooms = new int[]{-1, -1, -1, -1};
 		this.layout = new char[this.sizeX][this.sizeY];
 		this.setLayout();
 	}
@@ -25,7 +39,7 @@ public class Room {
 	public void addDoors() {
 		for (int i = 0; i < numDoors; i++) {
 			if(this.doorPosition[i] > 9)
-			this.layout[this.doorPosition[i] % 10][this.doorPosition[i] / 10] = ' ';
+			this.layout[this.doorPosition[i] / 10][this.doorPosition[i] % 10] = ' ';
 			else
 				this.layout[0][this.doorPosition[i]] = ' ';
 		}
@@ -72,10 +86,15 @@ public class Room {
 		this.setLayout();
 		if (o instanceof Character) {
 			Character c = (Character) o;
+			for (int i = 0; i < numDoors; i++) {
+				System.out.println("characterPositon " + c.getPosX() + c.getPosY());
+				System.out.println("doorPositon " + doorPosition[i]);
+			}
 			if (this.layout[c.getPosX()][c.getPosY()] == '#')
 				throw new HitWallException("you hit a wall");
-			if (this.checkDoor(c.getPosX(), c.getPosY()))
+			if (this.checkDoor(c.getPosX(), c.getPosY())) {
 				throw new EnterNewRoomException("entered a new room");
+			}
 			this.layout[c.getPosX()][c.getPosY()] = c.icon;
 		}
 	}
