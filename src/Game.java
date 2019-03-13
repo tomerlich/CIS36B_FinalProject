@@ -202,14 +202,14 @@ public class Game extends Application{
 		
 		testRoom = new Room[3][3];
 		dungeonLayout = new boolean[][]{
-			{false, true, false},
-			{false, true, false},
-			{true, true, true}};
+			{false, true , false},
+			{false, true , false},
+			{true , true , true }};
 
 		for (int i = 0; i < testRoom.length; i++) {
 			for (int j = 0; j < testRoom[i].length; j++) {
 				if (dungeonLayout[i][j] == true) {
-					testRoom[i][j] = new Room(10, 10);
+					testRoom[i][j] = new Room(9, 9);
 					testRoom[i][j].setLayout();
 				}
 				else
@@ -255,10 +255,29 @@ public class Game extends Application{
 	}
 	
 	private void addDoorsToRooms() {
-		testRoom[Room.getCurrentRoomX()][Room.getCurrentRoomY()].addDoorTop();
-		testRoom[Room.getCurrentRoomX()][Room.getCurrentRoomY()].addDoorBottom();
+		if (Room.getCurrentRoomX() - 1 >= 0) {
+			if (dungeonLayout[Room.getCurrentRoomX() - 1][Room.getCurrentRoomY()]) {
+				testRoom[Room.getCurrentRoomX()][Room.getCurrentRoomY()].addDoorLeft();
+			}
+		}
 		
-		testRoom[Room.getCurrentRoomX()][Room.getCurrentRoomY()].addDoors();
+		if (Room.getCurrentRoomX() + 1 <= 2) {
+			if (dungeonLayout[Room.getCurrentRoomX() + 1][Room.getCurrentRoomY()]) {
+				testRoom[Room.getCurrentRoomX()][Room.getCurrentRoomY()].addDoorLeft();
+			}
+		}
+		
+		if (Room.getCurrentRoomY() - 1 >= 0) {
+			if (dungeonLayout[Room.getCurrentRoomX()][Room.getCurrentRoomY() - 1]) {
+				testRoom[Room.getCurrentRoomX()][Room.getCurrentRoomY()].addDoorLeft();
+			}
+		}
+		
+		if (Room.getCurrentRoomY() + 1 <= 2) {
+			if (dungeonLayout[Room.getCurrentRoomX()][Room.getCurrentRoomY() + 1]) {
+				testRoom[Room.getCurrentRoomX()][Room.getCurrentRoomY()].addDoorLeft();
+			}
+		}
 	}
 
 	private void clearMapLayout() {

@@ -1,6 +1,14 @@
 import java.util.ArrayList;
 
 public class Room {
+
+	private static int numRooms = 0;
+
+	private static int currentRoomX = 1, currentRoomY = 1;
+	public int sizeX, sizeY, numDoors;
+	public ArrayList<Integer> doorPosition;
+	public char[][] layout;
+	
 	public static int getCurrentRoomX() {
 		return currentRoomX;
 	}
@@ -16,13 +24,6 @@ public class Room {
 	public static void setCurrentRoomY(int currentRoomY) {
 		Room.currentRoomY = currentRoomY;
 	}
-
-	private static int numRooms = 0;
-
-	private static int currentRoomX = 1, currentRoomY = 1;
-	public int sizeX, sizeY, numDoors;
-	public ArrayList<Integer> doorPosition;
-	public char[][] layout;
 	
 	public Room() {
 		this(0, 0);
@@ -32,7 +33,7 @@ public class Room {
 		super();
 		this.sizeX = sizeX;
 		this.sizeY = sizeY;
-		doorPosition = new ArrayList<Integer>();
+		this.doorPosition = new ArrayList<Integer>();
 		this.layout = new char[this.sizeX][this.sizeY];
 	}
 	
@@ -43,23 +44,27 @@ public class Room {
 	}
 	
 	public void addDoorLeft() {
+		System.out.println("Added doors on left");
 		this.numDoors++;
 		this.doorPosition.add(04);
 	}
 	
 	public void addDoorRight() {
+		System.out.println("Added doors on right");
 		this.numDoors++;
-		this.doorPosition.add(94);
+		this.doorPosition.add(84);
 	}
 	
 	public void addDoorTop() {
+		System.out.println("Added doors on top");
 		this.numDoors++;
 		this.doorPosition.add(40);
 	}
 	
 	public void addDoorBottom() {
+		System.out.println("Added doors on bottom");
 		this.numDoors++;
-		this.doorPosition.add(49);
+		this.doorPosition.add(48);
 	}
 	
 	public void setLayout() {
