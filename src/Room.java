@@ -33,7 +33,6 @@ public class Room {
 		this.sizeY = sizeY;
 		this.adjRooms = new int[]{-1, -1, -1, -1};
 		this.layout = new char[this.sizeX][this.sizeY];
-		this.setLayout();
 	}
 	
 	public void addDoors() {
@@ -86,12 +85,9 @@ public class Room {
 		this.setLayout();
 		if (o instanceof Character) {
 			Character c = (Character) o;
-			for (int i = 0; i < numDoors; i++) {
-				System.out.println("characterPositon " + c.getPosX() + c.getPosY());
-				System.out.println("doorPositon " + doorPosition[i]);
+			if (this.layout[c.getPosX()][c.getPosY()] == '#') {
+				throw new HitWallException("\nYou hit a wall");
 			}
-			if (this.layout[c.getPosX()][c.getPosY()] == '#')
-				throw new HitWallException("you hit a wall");
 			if (this.checkDoor(c.getPosX(), c.getPosY())) {
 				throw new EnterNewRoomException("entered a new room");
 			}
