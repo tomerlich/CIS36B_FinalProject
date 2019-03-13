@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 
 public class Room {
 	public static int getCurrentRoomX() {
@@ -20,7 +21,7 @@ public class Room {
 
 	private static int currentRoomX = 1, currentRoomY = 1;
 	public int sizeX, sizeY, numDoors;
-	public int[] doorPosition, adjRooms;
+	public ArrayList<Integer> doorPosition;
 	public char[][] layout;
 	
 	public Room() {
@@ -31,17 +32,34 @@ public class Room {
 		super();
 		this.sizeX = sizeX;
 		this.sizeY = sizeY;
-		this.adjRooms = new int[]{-1, -1, -1, -1};
+		doorPosition = new ArrayList<Integer>();
 		this.layout = new char[this.sizeX][this.sizeY];
 	}
 	
 	public void addDoors() {
-		for (int i = 0; i < numDoors; i++) {
-			if(this.doorPosition[i] > 9)
-			this.layout[this.doorPosition[i] / 10][this.doorPosition[i] % 10] = ' ';
-			else
-				this.layout[0][this.doorPosition[i]] = ' ';
+		for (int i = 0; i < doorPosition.size(); i++) {
+			this.layout[doorPosition.get(i) / 10][doorPosition.get(i) % 10] = ' ';
 		}
+	}
+	
+	public void addDoorLeft() {
+		this.numDoors++;
+		this.doorPosition.add(04);
+	}
+	
+	public void addDoorRight() {
+		this.numDoors++;
+		this.doorPosition.add(94);
+	}
+	
+	public void addDoorTop() {
+		this.numDoors++;
+		this.doorPosition.add(40);
+	}
+	
+	public void addDoorBottom() {
+		this.numDoors++;
+		this.doorPosition.add(49);
 	}
 	
 	public void setLayout() {
@@ -98,7 +116,7 @@ public class Room {
 	private boolean checkDoor(int posX, int posY) {
 		int position = (posX * 10) + posY;
 		for (int i = 0; i < this.numDoors; i++) {
-			if (this.doorPosition[i] == position) {
+			if (this.doorPosition.get(i) == position) {
 				return true;
 			}
 		}

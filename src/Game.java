@@ -217,6 +217,8 @@ public class Game extends Application{
 			}
 		}
 		
+		this.addDoorsToRooms();
+		
 		try {
 			testRoom[Room.getCurrentRoomX()][Room.getCurrentRoomY()].placeObject(testPlayer);
 		} catch (HitWallException e) {	
@@ -252,6 +254,13 @@ public class Game extends Application{
 		}
 	}
 	
+	private void addDoorsToRooms() {
+		testRoom[Room.getCurrentRoomX()][Room.getCurrentRoomY()].addDoorTop();
+		testRoom[Room.getCurrentRoomX()][Room.getCurrentRoomY()].addDoorBottom();
+		
+		testRoom[Room.getCurrentRoomX()][Room.getCurrentRoomY()].addDoors();
+	}
+
 	private void clearMapLayout() {
 		for (int i = 0; i < testRoom[Room.getCurrentRoomX()][Room.getCurrentRoomY()].sizeX; i++) {
 			for (int j = 0; j < testRoom[Room.getCurrentRoomX()][Room.getCurrentRoomY()].sizeY; j++) {
