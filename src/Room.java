@@ -4,7 +4,7 @@ public class Room {
 
 	private static int numRooms = 0;
 
-	private static int currentRoomX = 1, currentRoomY = 1;
+	private static int currentRoomX = 1, currentRoomY = 0;
 	public int sizeX, sizeY, numDoors;
 	public ArrayList<Integer> doorPosition;
 	public char[][] layout;
