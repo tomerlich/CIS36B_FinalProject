@@ -4,7 +4,7 @@ public class Room {
 
 	private static int numRooms = 0;
 
-	private static int currentRoomX = 1, currentRoomY = 0;
+	private static int currentRoomX = 1, currentRoomY = 2;
 	public int sizeX, sizeY, numDoors;
 	public ArrayList<Integer> doorPosition;
 	public char[][] layout;
@@ -44,25 +44,21 @@ public class Room {
 	}
 	
 	public void addDoorLeft() {
-		System.out.println("Added doors on left");
 		this.numDoors++;
 		this.doorPosition.add(04);
 	}
 	
 	public void addDoorRight() {
-		System.out.println("Added doors on right");
 		this.numDoors++;
 		this.doorPosition.add(84);
 	}
 	
 	public void addDoorTop() {
-		System.out.println("Added doors on top");
 		this.numDoors++;
 		this.doorPosition.add(40);
 	}
 	
 	public void addDoorBottom() {
-		System.out.println("Added doors on bottom");
 		this.numDoors++;
 		this.doorPosition.add(48);
 	}
@@ -112,7 +108,7 @@ public class Room {
 				throw new HitWallException("\nYou hit a wall");
 			}
 			if (this.checkDoor(c.getPosX(), c.getPosY())) {
-				throw new EnterNewRoomException("entered a new room");
+				throw new EnterNewRoomException("\nEntered a new room");
 			}
 			this.layout[c.getPosX()][c.getPosY()] = c.icon;
 		}
