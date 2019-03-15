@@ -124,6 +124,7 @@ public class Game extends Application {
 		arg0.setTitle("Angband 2019");
 		mapLayout = new GridPane();
 		testPlayer = new Character('@', 0, 0, 1, 1, "name");
+		testRoom = new Room[3][3];
 
 		controlLayout = new GridPane();
 		controlLayout.setAlignment(Pos.CENTER);
@@ -203,8 +204,7 @@ public class Game extends Application {
 		mapLayout.setPadding(new Insets(10, 10, 10, 10));
 		mapLayout.setHgap(5);
 
-		testRoom = new Room[3][3];
-		dungeonLayout = new boolean[][] { { false, true, false }, { false, true, false }, { true, true, true } };
+		dungeonLayout = new boolean[][] { { true, true, true }, { true, true, true }, { true, true, true } };
 
 		for (int i = 0; i < testRoom.length; i++) {
 			for (int j = 0; j < testRoom[i].length; j++) {
@@ -229,7 +229,7 @@ public class Game extends Application {
 					.getPosY()] = testPlayer.icon;
 			logText.setText(logText.getText() + e.getMessage());
 		} catch (EnterNewRoomException e) {
-			logText.setText(logText.getText() + e.getMessage());
+			this.loadRoom(e.getMessage());
 		} catch (Exception e1) {
 		}
 
@@ -304,13 +304,29 @@ public class Game extends Application {
 		}
 	}
 
-	public void loadRoom() {
-		for (int i = 0; i < testRoom[Room.getCurrentRoomY()][Room.getCurrentRoomX()].sizeX; i++) {
-			for (int j = 0; j < testRoom[Room.getCurrentRoomY()][Room.getCurrentRoomX()].sizeY; j++) {
-				map[Room.getCurrentRoomY()][Room.getCurrentRoomX()][i][j].setText(" ");
-			}
+	public void loadRoom(String message) {
+		logText.setText(logText.getText() + message);
+		if (testPlayer.getPosX() == 8) {
+			Room.moveRight();
 		}
-		this.setMapLayout();
+		else if (testPlayer.getPosX() == 0) {
+			Room.moveLeft();
+		}
+		else if (testPlayer.getPosY() == 0) {
+			Room.moveUp();
+		}
+		else if (testPlayer.getPosY() == 8){
+			Room.moveDown();
+		}
+		System.out.print(testPlayer.getPosX() + " " + testPlayer.getPosY() + "\n");
+		System.out.print(Room.getCurrentRoomX() + " " + Room.getCurrentRoomY() + "\n");
+		Room.setCurrentRoomX(1);
+		Room.setCurrentRoomY(1);
+		testPlayer.setPosX(1);
+		testPlayer.setPosY(1);
+		testRoom[Room.getCurrentRoomY()][Room.getCurrentRoomX()].setLayout();
+		testRoom[Room.getCurrentRoomY()][Room.getCurrentRoomX()].getLayout()[testPlayer.getPosX()][testPlayer
+			.getPosY()] = testPlayer.icon;
 	}
 
 	private void setControlLayout() {

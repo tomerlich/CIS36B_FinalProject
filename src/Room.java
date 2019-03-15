@@ -4,7 +4,7 @@ public class Room {
 
 	private static int numRooms = 0;
 
-	private static int currentRoomX = 1, currentRoomY = 2;
+	private static int currentRoomX = 0, currentRoomY = 0;
 	public int sizeX, sizeY, numDoors;
 	public ArrayList<Integer> doorPosition;
 	public char[][] layout;
@@ -23,6 +23,19 @@ public class Room {
 
 	public static void setCurrentRoomY(int currentRoomY) {
 		Room.currentRoomY = currentRoomY;
+	}
+	
+	public static void moveLeft() {
+		Room.currentRoomY--;
+	}
+	public static void moveRight() {
+		Room.currentRoomY++;
+	}
+	public static void moveUp() {
+		Room.currentRoomX--;
+	}
+	public static void moveDown() {
+		Room.currentRoomX++;
 	}
 	
 	public Room() {
