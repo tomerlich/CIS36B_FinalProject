@@ -204,7 +204,7 @@ public class Game extends Application {
 		mapLayout.setPadding(new Insets(10, 10, 10, 10));
 		mapLayout.setHgap(5);
 
-		dungeonLayout = new boolean[][] { { true, true, true }, { true, true, true }, { true, true, true } };
+		dungeonLayout = new boolean[][] { { true, true, false }, { false, true, true }, { true, true, true } };
 
 		for (int i = 0; i < testRoom.length; i++) {
 			for (int j = 0; j < testRoom[i].length; j++) {
@@ -306,24 +306,30 @@ public class Game extends Application {
 
 	public void loadRoom(String message) {
 		logText.setText(logText.getText() + message);
-		if (testPlayer.getPosX() == 8) {
+		if (testPlayer.getPosX() == testRoom[Room.getCurrentRoomY()][Room.getCurrentRoomX()].sizeX - 1) {
 			Room.moveRight();
+			testPlayer.setPosX(1);
+			testPlayer.setPosY(testRoom[Room.getCurrentRoomY()][Room.getCurrentRoomX()].sizeX / 2);
 		}
 		else if (testPlayer.getPosX() == 0) {
 			Room.moveLeft();
+			testPlayer.setPosX(testRoom[Room.getCurrentRoomX()][Room.getCurrentRoomX()].sizeX - 2);
+			testPlayer.setPosY(testRoom[Room.getCurrentRoomY()][Room.getCurrentRoomX()].sizeX / 2);
 		}
 		else if (testPlayer.getPosY() == 0) {
 			Room.moveUp();
+			testPlayer.setPosX(testRoom[Room.getCurrentRoomY()][Room.getCurrentRoomX()].sizeY / 2);
+			testPlayer.setPosY(testRoom[Room.getCurrentRoomY()][Room.getCurrentRoomX()].sizeY - 2);
 		}
-		else if (testPlayer.getPosY() == 8){
+		else if (testPlayer.getPosY() == testRoom[Room.getCurrentRoomY()][Room.getCurrentRoomX()].sizeX - 1){
 			Room.moveDown();
+			testPlayer.setPosX(testRoom[Room.getCurrentRoomY()][Room.getCurrentRoomX()].sizeY / 2);
+			testPlayer.setPosY(1);
 		}
 		System.out.print(testPlayer.getPosX() + " " + testPlayer.getPosY() + "\n");
 		System.out.print(Room.getCurrentRoomX() + " " + Room.getCurrentRoomY() + "\n");
-		Room.setCurrentRoomX(1);
-		Room.setCurrentRoomY(1);
-		testPlayer.setPosX(1);
-		testPlayer.setPosY(1);
+		//Room.setCurrentRoomX(1);
+		//Room.setCurrentRoomY(1);
 		testRoom[Room.getCurrentRoomY()][Room.getCurrentRoomX()].setLayout();
 		testRoom[Room.getCurrentRoomY()][Room.getCurrentRoomX()].getLayout()[testPlayer.getPosX()][testPlayer
 			.getPosY()] = testPlayer.icon;

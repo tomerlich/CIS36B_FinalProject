@@ -26,16 +26,16 @@ public class Room {
 	}
 	
 	public static void moveLeft() {
-		Room.currentRoomY--;
-	}
-	public static void moveRight() {
-		Room.currentRoomY++;
-	}
-	public static void moveUp() {
 		Room.currentRoomX--;
 	}
-	public static void moveDown() {
+	public static void moveRight() {
 		Room.currentRoomX++;
+	}
+	public static void moveUp() {
+		Room.currentRoomY--;
+	}
+	public static void moveDown() {
+		Room.currentRoomY++;
 	}
 	
 	public Room() {
