@@ -20,12 +20,11 @@ public class Game extends Application {
 	private Text logText;
 	private Room[][] testRoom;
 	private Character testPlayer;
-	private GridPane mapLayout, controlLayout, sceneLayout;
+	private GridPane mapLayout, controlLayout, sceneLayout, menuControlsLayout;
 	private ScrollPane infoLayout;
 	private Scene scene;
-	private VBox menuLayout;
+	private VBox menuLayout, menuInfoLayout;
 	private boolean[][] dungeonLayout;
-	private boolean refresh = true;
 
 	public Button getRightButton() {
 		return rightButton;
@@ -108,11 +107,11 @@ public class Game extends Application {
 	}
 
 	public VBox getMenuLayout() {
-		return menuLayout;
+		return menuInfoLayout;
 	}
 
 	public void setMenuLayout(VBox menuLayout) {
-		this.menuLayout = menuLayout;
+		this.menuInfoLayout = menuLayout;
 	}
 
 	public static void main(String[] Args) {
@@ -125,7 +124,11 @@ public class Game extends Application {
 		mapLayout = new GridPane();
 		testPlayer = new Character('@', 0, 0, 1, 1, "name");
 		testRoom = new Room[3][3];
-
+		
+		menuLayout = new VBox();
+		menuControlsLayout = new GridPane();
+		menuInfoLayout = new VBox();
+		
 		controlLayout = new GridPane();
 		controlLayout.setAlignment(Pos.CENTER);
 
@@ -134,7 +137,6 @@ public class Game extends Application {
 
 		infoLayout = new ScrollPane();
 
-		menuLayout = new VBox();
 
 		logText = new Text("Action Log:");
 
@@ -144,7 +146,7 @@ public class Game extends Application {
 
 		this.setInfoLayout();
 
-		menuLayout.getChildren().add(new Text("this is another hello"));
+		this.setMenuInfoLayout();
 
 		sceneLayout.setPadding(new Insets(10, 10, 10, 10));
 		sceneLayout.setVgap(10);
@@ -163,6 +165,28 @@ public class Game extends Application {
 
 		arg0.setScene(scene);
 		arg0.show();
+	}
+
+	private void setMenuInfoLayout() {
+		Button openBestiary = new Button("Open Bestiary");
+		Button openInventory = new Button("Open Inventory");
+		Text menuInfoText = new Text();
+
+		openBestiary.setOnAction(e -> {
+			menuInfoText.setText("This is the Bestiary!!!");
+		});
+		
+		openInventory.setOnAction(e -> {
+			menuInfoText.setText("This is the inventory!!!");
+		});
+		
+		GridPane.setConstraints(openBestiary, 0, 0);
+		GridPane.setConstraints(openInventory, 1, 0);
+		menuInfoLayout.setMaxHeight(100);
+		menuInfoLayout.setMinHeight(100);
+		menuControlsLayout.getChildren().addAll(openBestiary, openInventory);
+		menuInfoLayout.getChildren().add(menuInfoText);
+		menuLayout.getChildren().addAll(menuControlsLayout, menuInfoLayout);
 	}
 
 	private void setKeyboardControls() {
@@ -326,10 +350,7 @@ public class Game extends Application {
 			testPlayer.setPosX(testRoom[Room.getCurrentRoomY()][Room.getCurrentRoomX()].sizeY / 2);
 			testPlayer.setPosY(1);
 		}
-		System.out.print(testPlayer.getPosX() + " " + testPlayer.getPosY() + "\n");
-		System.out.print(Room.getCurrentRoomX() + " " + Room.getCurrentRoomY() + "\n");
-		//Room.setCurrentRoomX(1);
-		//Room.setCurrentRoomY(1);
+		
 		testRoom[Room.getCurrentRoomY()][Room.getCurrentRoomX()].setLayout();
 		testRoom[Room.getCurrentRoomY()][Room.getCurrentRoomX()].getLayout()[testPlayer.getPosX()][testPlayer
 			.getPosY()] = testPlayer.icon;
