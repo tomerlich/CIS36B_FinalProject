@@ -1,4 +1,5 @@
 import java.io.File;
+import java.util.Random;
 
 import javafx.application.Application;
 import javafx.geometry.Insets;
@@ -9,7 +10,6 @@ import javafx.scene.control.ScrollPane;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
-import javafx.scene.media.Media;
 import javafx.scene.paint.Color;
 import javafx.scene.text.*;
 import javafx.stage.Stage;
@@ -24,12 +24,82 @@ public class Game extends Application {
 	private Text logText;
 	private Room[][] testRoom;
 	private Character testPlayer;
+	private Character testEnemy;
 	private GridPane mapLayout, controlLayout, sceneLayout, menuControlsLayout;
 	private ScrollPane infoLayout;
 	private Scene scene;
 	private VBox menuLayout, menuInfoLayout;
-	private boolean[][] dungeonLayout;
+	private static boolean[][] dungeonLayout;
+	
 	public static void main(String[] Args) {
+		Random r = new Random();
+		r.setSeed(System.currentTimeMillis());
+		r.nextInt(5);
+		int layoutIndex = 0;
+		
+		switch (layoutIndex) {
+		case 0:
+			dungeonLayout = new boolean[][] {
+				{true, true, true, true, true},
+				{true, true, true, true, true},
+				{true, true, true, true, true},
+				{true, true, true, true, true},
+				{true, true, true, true, true}
+			};
+			System.out.println("layoutnum: " + layoutIndex);
+			break;
+		case 1:
+			dungeonLayout = new boolean[][] {
+				{true, true, true, true, true},
+				{true, false, false, false, true},
+				{true, false, false, false, true},
+				{true, false, false, false, true},
+				{true, true, true, true, true}
+			};
+			System.out.println("layoutnum: " + layoutIndex);
+			break;
+		case 2:
+			dungeonLayout = new boolean[][] {
+				{true, true, true, true, true},
+				{true, true, true, true, true},
+				{true, true, true, false, true},
+				{true, true, true, false, true},
+				{true, true, true, true, true}
+			};
+			System.out.println("layoutnum: " + layoutIndex);
+			break;
+		case 3:
+			dungeonLayout = new boolean[][] {
+				{true, true, true, true, true},
+				{true, true, true, true, true},
+				{true, true, true, true, true},
+				{true, true, true, true, true},
+				{true, true, true, true, true}
+			};
+			System.out.println("layoutnum: " + layoutIndex);
+			break;
+		case 4:
+			dungeonLayout = new boolean[][] {
+				{true, true, true, true, true},
+				{true, true, true, true, true},
+				{true, true, true, true, true},
+				{true, true, true, true, true},
+				{true, true, true, true, true}
+			};
+			System.out.println("layoutnum: " + layoutIndex);
+			break;
+		case 5:
+			dungeonLayout = new boolean[][] {
+				{true, true, true, true, true},
+				{true, true, true, true, true},
+				{true, true, true, true, true},
+				{true, true, true, true, true},
+				{true, true, true, true, true}
+			};
+			System.out.println("layoutnum: " + layoutIndex);
+			break;
+		}
+		
 		File file = new File("Mozart - Lacrimosa.mp3");
 		Player player = new Player(file.toURI().toString());
 		player.mediaPlayer.play();
@@ -47,7 +117,9 @@ public class Game extends Application {
 		arg0.setTitle("Angband 2019");
 		mapLayout = new GridPane();
 		testPlayer = new Character('@', 0, 0, 1, 1, "name");
-		testRoom = new Room[3][3];
+		testEnemy = new Character('T', 0, 0, 5, 5, "test");
+		testEnemy.setIcon('$');
+		testRoom = new Room[5][5];
 		
 		menuLayout = new VBox();
 		menuControlsLayout = new GridPane();
@@ -160,9 +232,7 @@ public class Game extends Application {
 	private void setMapLayout() {
 		mapLayout.setPadding(new Insets(10, 10, 10, 10));
 		mapLayout.setHgap(5);
-
-		dungeonLayout = new boolean[][] { { true, true, false }, { false, true, true }, { true, true, true } };
-
+		
 		for (int i = 0; i < testRoom.length; i++) {
 			for (int j = 0; j < testRoom[i].length; j++) {
 				if (dungeonLayout[i][j] == true) {
@@ -174,9 +244,11 @@ public class Game extends Application {
 		}
 
 		this.addDoorsToRooms();
-
+		testRoom[Room.getCurrentRoomY()][Room.getCurrentRoomX()].setLayout();
 		try {
 			testRoom[Room.getCurrentRoomY()][Room.getCurrentRoomX()].placeObject(testPlayer);
+			System.out.print("Hello " + testEnemy.icon);
+			testRoom[Room.getCurrentRoomY()][Room.getCurrentRoomX()].placeObject(testEnemy);
 		} catch (HitWallException e) {
 			if (testPlayer.getPosX() == testPlayer.getPrevX()) {
 				testPlayer.setPosY(testPlayer.getPrevY());
@@ -184,6 +256,7 @@ public class Game extends Application {
 				testPlayer.setPosX(testPlayer.getPrevX());
 			testRoom[Room.getCurrentRoomY()][Room.getCurrentRoomX()].getLayout()[testPlayer.getPosX()][testPlayer
 					.getPosY()] = testPlayer.icon;
+			
 			logText.setText(logText.getText() + e.getMessage());
 		} catch (EnterNewRoomException e) {
 			this.loadRoom(e.getMessage());
@@ -242,7 +315,7 @@ public class Game extends Application {
 					if (dungeonLayout[j][i + 1])
 						testRoom[j][i].addDoorRight();
 				} else if (i == (dungeonLayout.length - 1)) {
-					if (dungeonLayout[i][i - 1])
+					if (dungeonLayout[j][i - 1])
 						testRoom[j][i].addDoorLeft();
 					;
 				} else {

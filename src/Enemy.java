@@ -1,7 +1,7 @@
 import java.util.ArrayList;
 import java.util.Random;
 
-import hmmm.Character;
+//import hmmm.Character;
 
 public class Enemy extends Movement implements EnemyBehavior{
 	public char icon;

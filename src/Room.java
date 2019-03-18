@@ -8,6 +8,7 @@ public class Room {
 	public int sizeX, sizeY, numDoors;
 	public ArrayList<Integer> doorPosition;
 	public char[][] layout;
+	public Enemy enemy;
 	
 	public static int getCurrentRoomX() {
 		return currentRoomX;
@@ -113,8 +114,7 @@ public class Room {
 		Room.numRooms = numRooms;
 	}
 	
-	public void placeObject(Object o) throws Exception{
-		this.setLayout();
+	public void placeObject(Character o) throws Exception{
 		if (o instanceof Character) {
 			Character c = (Character) o;
 			if (this.layout[c.getPosX()][c.getPosY()] == '#') {
@@ -124,6 +124,18 @@ public class Room {
 				throw new EnterNewRoomException("\nEntered a new room");
 			}
 			this.layout[c.getPosX()][c.getPosY()] = c.icon;
+		}
+	}
+	
+	public void placeEnemy(Enemy o) throws Exception{
+		{
+			if (this.layout[o.getPosX()][o.getPosY()] == '#') {
+				throw new HitWallException("\nYou hit a wall");
+			}
+			if (this.checkDoor(o.getPosX(), o.getPosY())) {
+				throw new EnterNewRoomException("\nEntered a new room");
+			}
+			this.layout[o.getPosX()][o.getPosY()] = o.icon;
 		}
 	}
 
