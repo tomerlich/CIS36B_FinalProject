@@ -13,7 +13,11 @@ import javafx.scene.media.Media;
 import javafx.scene.paint.Color;
 import javafx.scene.text.*;
 import javafx.stage.Stage;
-
+/**
+ * 
+ * @author tomer
+ *
+ */
 public class Game extends Application {
 	private Button rightButton, downButton, leftButton, upButton;
 	private Text[][][][] map;
@@ -33,6 +37,12 @@ public class Game extends Application {
 	}
 
 	@Override
+	/**
+	 * Override the start method from the application class is called by the launch method in main
+	 * also sets all of our scene elements
+	 * 
+	 * @param Stage the window provided by the application class
+	 */
 	public void start(Stage arg0) throws Exception {
 		arg0.setTitle("Angband 2019");
 		mapLayout = new GridPane();
@@ -81,6 +91,9 @@ public class Game extends Application {
 		arg0.show();
 	}
 
+	/**
+	 * sets the layout for our menu pane in the bottom right corner
+	 */
 	private void setMenuInfoLayout() {
 		Button openBestiary = new Button("Open Bestiary");
 		Button openInventory = new Button("Open Inventory");
@@ -103,6 +116,9 @@ public class Game extends Application {
 		menuLayout.getChildren().addAll(menuControlsLayout, menuInfoLayout);
 	}
 
+	/**
+	 * creates the keyboard controls for the game also listens for key presses
+	 */
 	private void setKeyboardControls() {
 		scene.setOnKeyPressed(ke -> {
 			KeyCode keyCode = ke.getCode();
@@ -138,6 +154,9 @@ public class Game extends Application {
 
 	}
 
+	/**
+	 * render the map and the current room
+	 */
 	private void setMapLayout() {
 		mapLayout.setPadding(new Insets(10, 10, 10, 10));
 		mapLayout.setHgap(5);
@@ -195,6 +214,9 @@ public class Game extends Application {
 		}
 	}
 
+	/**
+	 * add doors to room according to our dungeon layout array
+	 */
 	private void addDoorsToRooms() {
 		for (int j = 0; j < dungeonLayout.length; j++) {
 			for (int i = 0; i < dungeonLayout[j].length; i++) {
@@ -234,6 +256,9 @@ public class Game extends Application {
 		}
 	}
 
+	/**
+	 * reset the map
+	 */
 	private void clearMapLayout() {
 		for (int i = 0; i < testRoom[Room.getCurrentRoomY()][Room.getCurrentRoomX()].sizeX; i++) {
 			for (int j = 0; j < testRoom[Room.getCurrentRoomY()][Room.getCurrentRoomX()].sizeY; j++) {
@@ -242,6 +267,10 @@ public class Game extends Application {
 		}
 	}
 
+	/**
+	 * load the room from our room array
+	 * @param message message for the program log
+	 */
 	public void loadRoom(String message) {
 		logText.setText(logText.getText() + message);
 		if (testPlayer.getPosX() == testRoom[Room.getCurrentRoomY()][Room.getCurrentRoomX()].sizeX - 1) {
@@ -270,6 +299,9 @@ public class Game extends Application {
 			.getPosY()] = testPlayer.icon;
 	}
 
+	/**
+	 * initialize the on screen controls for the game
+	 */
 	private void setControlLayout() {
 		controlLayout.setPadding(new Insets(10, 10, 10, 10));
 		controlLayout.setVgap(10);
@@ -321,6 +353,9 @@ public class Game extends Application {
 		GridPane.setConstraints(rightButton, 2, 1);
 	}
 
+	/**
+	 * set the game log.
+	 */
 	private void setInfoLayout() {
 		infoLayout.setPrefViewportHeight(100);
 		infoLayout.setPrefViewportWidth(150);
