@@ -127,7 +127,10 @@ public class Room {
 		}
 		else if(o instanceof Enemy) {
 			Enemy m = (Enemy) o;
-			if (this.layout[m.getPosX()][m.getPosY()] == '#') {
+			if (this.layout[m.getPosX()][m.getPosY()] == '@') {
+				throw new CombatException();
+			}
+			if (this.layout[m.getPosX()][m.getPosY()] != ' ') {
 				throw new HitWallException("\nYou hit a wall");
 			}
 			if (this.checkDoor(m.getPosX(), m.getPosY())) {

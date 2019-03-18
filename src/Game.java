@@ -275,6 +275,9 @@ public class Game extends Application {
 				l.move(testPlayer);
 				testRoom[Room.getCurrentRoomY()][Room.getCurrentRoomX()].placeObject(l);
 			} 
+			catch (CombatException ce) {
+				
+			}
 			catch (Exception e) {
 				if (l.getPosX() == l.getPrevX()) {
 					l.setPosY(l.getPrevY());
