@@ -4,8 +4,6 @@ import java.util.Random;
 //import hmmm.Character;
 
 public class Enemy extends Movement implements EnemyBehavior{
-	public char icon;
-	public String name;
 	private int prevX, prevY;
 	public Enemy() {
 		this(' ', 0, 0, 0, 0, "no name");
@@ -19,6 +17,7 @@ public class Enemy extends Movement implements EnemyBehavior{
     
     public void randomMove() { 
     	Random r = new Random ();
+    	r.setSeed(System.currentTimeMillis());
     	int i = r.nextInt(5);
     	if (i == 0) {
     		moveDown();

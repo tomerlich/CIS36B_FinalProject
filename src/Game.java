@@ -24,7 +24,7 @@ public class Game extends Application {
 	private Text logText;
 	private Room[][] testRoom;
 	private Character testPlayer;
-	private Character testEnemy;
+	private Enemy testEnemy;
 	private GridPane mapLayout, controlLayout, sceneLayout, menuControlsLayout;
 	private ScrollPane infoLayout;
 	private Scene scene;
@@ -34,26 +34,25 @@ public class Game extends Application {
 	public static void main(String[] Args) {
 		Random r = new Random();
 		r.setSeed(System.currentTimeMillis());
-		r.nextInt(5);
-		int layoutIndex = 0;
+		int layoutIndex = r.nextInt(6);
 		
 		switch (layoutIndex) {
 		case 0:
 			dungeonLayout = new boolean[][] {
-				{true, true, true, true, true},
-				{true, true, true, true, true},
-				{true, true, true, true, true},
-				{true, true, true, true, true},
-				{true, true, true, true, true}
+				{true, false, true, true, true},
+				{true, false, true, false, true},
+				{true, false, true, false, true},
+				{true, false, true, false, true},
+				{true, true, true, false, true}
 			};
 			System.out.println("layoutnum: " + layoutIndex);
 			break;
 		case 1:
 			dungeonLayout = new boolean[][] {
 				{true, true, true, true, true},
-				{true, false, false, false, true},
-				{true, false, false, false, true},
-				{true, false, false, false, true},
+				{true, false, true, false, true},
+				{true, false, true, false, true},
+				{true, false, true, false, true},
 				{true, true, true, true, true}
 			};
 			System.out.println("layoutnum: " + layoutIndex);
@@ -61,9 +60,9 @@ public class Game extends Application {
 		case 2:
 			dungeonLayout = new boolean[][] {
 				{true, true, true, true, true},
+				{false, false, false, false, true},
 				{true, true, true, true, true},
-				{true, true, true, false, true},
-				{true, true, true, false, true},
+				{true, false, false, false, false},
 				{true, true, true, true, true}
 			};
 			System.out.println("layoutnum: " + layoutIndex);
@@ -71,9 +70,9 @@ public class Game extends Application {
 		case 3:
 			dungeonLayout = new boolean[][] {
 				{true, true, true, true, true},
+				{true, false, false, false, true},
 				{true, true, true, true, true},
-				{true, true, true, true, true},
-				{true, true, true, true, true},
+				{true, false, false, false, true},
 				{true, true, true, true, true}
 			};
 			System.out.println("layoutnum: " + layoutIndex);
@@ -81,20 +80,20 @@ public class Game extends Application {
 		case 4:
 			dungeonLayout = new boolean[][] {
 				{true, true, true, true, true},
+				{false, false, true, false, false},
 				{true, true, true, true, true},
-				{true, true, true, true, true},
-				{true, true, true, true, true},
-				{true, true, true, true, true}
+				{false, false, true, false, true},
+				{true, true, true, false, true}
 			};
 			System.out.println("layoutnum: " + layoutIndex);
 			break;
 		case 5:
 			dungeonLayout = new boolean[][] {
-				{true, true, true, true, true},
-				{true, true, true, true, true},
-				{true, true, true, true, true},
-				{true, true, true, true, true},
-				{true, true, true, true, true}
+				{true, false, false, false, false},
+				{true, false, true, true, false},
+				{true, false, false, true, false},
+				{true, false, false, true, false},
+				{true, true, true, true, false}
 			};
 			System.out.println("layoutnum: " + layoutIndex);
 			break;
@@ -116,9 +115,8 @@ public class Game extends Application {
 	public void start(Stage arg0) throws Exception {
 		arg0.setTitle("Angband 2019");
 		mapLayout = new GridPane();
-		testPlayer = new Character('@', 0, 0, 1, 1, "name");
-		testEnemy = new Character('T', 0, 0, 5, 5, "test");
-		testEnemy.setIcon('$');
+		testPlayer = new Character('@', 100, 100, 4, 4, "name");
+		testEnemy = new Enemy('$', 0, 0, 2, 2, "test");
 		testRoom = new Room[5][5];
 		
 		menuLayout = new VBox();
@@ -245,10 +243,10 @@ public class Game extends Application {
 
 		this.addDoorsToRooms();
 		testRoom[Room.getCurrentRoomY()][Room.getCurrentRoomX()].setLayout();
+		this.updateEnemies();
+
 		try {
 			testRoom[Room.getCurrentRoomY()][Room.getCurrentRoomX()].placeObject(testPlayer);
-			System.out.print("Hello " + testEnemy.icon);
-			testRoom[Room.getCurrentRoomY()][Room.getCurrentRoomX()].placeObject(testEnemy);
 		} catch (HitWallException e) {
 			if (testPlayer.getPosX() == testPlayer.getPrevX()) {
 				testPlayer.setPosY(testPlayer.getPrevY());
@@ -256,7 +254,6 @@ public class Game extends Application {
 				testPlayer.setPosX(testPlayer.getPrevX());
 			testRoom[Room.getCurrentRoomY()][Room.getCurrentRoomX()].getLayout()[testPlayer.getPosX()][testPlayer
 					.getPosY()] = testPlayer.icon;
-			
 			logText.setText(logText.getText() + e.getMessage());
 		} catch (EnterNewRoomException e) {
 			this.loadRoom(e.getMessage());
@@ -284,6 +281,15 @@ public class Game extends Application {
 				GridPane.setConstraints(map[Room.getCurrentRoomY()][Room.getCurrentRoomX()][i][j], i, j);
 				mapLayout.getChildren().add(map[Room.getCurrentRoomY()][Room.getCurrentRoomX()][i][j]);
 			}
+		}
+	}
+
+	private void updateEnemies() {
+		try {
+			testRoom[Room.getCurrentRoomY()][Room.getCurrentRoomX()].placeObject(testEnemy);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 	}
 
@@ -349,21 +355,21 @@ public class Game extends Application {
 		if (testPlayer.getPosX() == testRoom[Room.getCurrentRoomY()][Room.getCurrentRoomX()].sizeX - 1) {
 			Room.moveRight();
 			testPlayer.setPosX(1);
-			testPlayer.setPosY(testRoom[Room.getCurrentRoomY()][Room.getCurrentRoomX()].sizeX / 2);
+			testPlayer.setPosY(4);
 		}
 		else if (testPlayer.getPosX() == 0) {
 			Room.moveLeft();
-			testPlayer.setPosX(testRoom[Room.getCurrentRoomX()][Room.getCurrentRoomX()].sizeX - 2);
-			testPlayer.setPosY(testRoom[Room.getCurrentRoomY()][Room.getCurrentRoomX()].sizeX / 2);
+			testPlayer.setPosX(7);
+			testPlayer.setPosY(4);
 		}
 		else if (testPlayer.getPosY() == 0) {
 			Room.moveUp();
-			testPlayer.setPosX(testRoom[Room.getCurrentRoomY()][Room.getCurrentRoomX()].sizeY / 2);
-			testPlayer.setPosY(testRoom[Room.getCurrentRoomY()][Room.getCurrentRoomX()].sizeY - 2);
+			testPlayer.setPosX(4);
+			testPlayer.setPosY(7);
 		}
 		else if (testPlayer.getPosY() == testRoom[Room.getCurrentRoomY()][Room.getCurrentRoomX()].sizeX - 1){
 			Room.moveDown();
-			testPlayer.setPosX(testRoom[Room.getCurrentRoomY()][Room.getCurrentRoomX()].sizeY / 2);
+			testPlayer.setPosX(4);
 			testPlayer.setPosY(1);
 		}
 		
