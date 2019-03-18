@@ -13,6 +13,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.*;
 import javafx.stage.Stage;
+
 /**
  * 
  * @author tomer
@@ -24,81 +25,57 @@ public class Game extends Application {
 	private Text logText;
 	private Room[][] testRoom;
 	private Character testPlayer;
-	private Enemy testEnemy;
+	private Enemy[][][] testEnemy;
 	private GridPane mapLayout, controlLayout, sceneLayout, menuControlsLayout;
 	private ScrollPane infoLayout;
 	private Scene scene;
 	private VBox menuLayout, menuInfoLayout;
 	private static boolean[][] dungeonLayout;
-	
+
 	public static void main(String[] Args) {
 		Random r = new Random();
 		r.setSeed(System.currentTimeMillis());
 		int layoutIndex = r.nextInt(6);
-		
+
 		switch (layoutIndex) {
 		case 0:
-			dungeonLayout = new boolean[][] {
-				{true, false, true, true, true},
-				{true, false, true, false, true},
-				{true, false, true, false, true},
-				{true, false, true, false, true},
-				{true, true, true, false, true}
-			};
+			dungeonLayout = new boolean[][] { { true, false, true, true, true }, { true, false, true, false, true },
+					{ true, false, true, false, true }, { true, false, true, false, true },
+					{ true, true, true, false, true } };
 			System.out.println("layoutnum: " + layoutIndex);
 			break;
 		case 1:
-			dungeonLayout = new boolean[][] {
-				{true, true, true, true, true},
-				{true, false, true, false, true},
-				{true, false, true, false, true},
-				{true, false, true, false, true},
-				{true, true, true, true, true}
-			};
+			dungeonLayout = new boolean[][] { { true, true, true, true, true }, { true, false, true, false, true },
+					{ true, false, true, false, true }, { true, false, true, false, true },
+					{ true, true, true, true, true } };
 			System.out.println("layoutnum: " + layoutIndex);
 			break;
 		case 2:
-			dungeonLayout = new boolean[][] {
-				{true, true, true, true, true},
-				{false, false, false, false, true},
-				{true, true, true, true, true},
-				{true, false, false, false, false},
-				{true, true, true, true, true}
-			};
+			dungeonLayout = new boolean[][] { { true, true, true, true, true }, { false, false, false, false, true },
+					{ true, true, true, true, true }, { true, false, false, false, false },
+					{ true, true, true, true, true } };
 			System.out.println("layoutnum: " + layoutIndex);
 			break;
 		case 3:
-			dungeonLayout = new boolean[][] {
-				{true, true, true, true, true},
-				{true, false, false, false, true},
-				{true, true, true, true, true},
-				{true, false, false, false, true},
-				{true, true, true, true, true}
-			};
+			dungeonLayout = new boolean[][] { { true, true, true, true, true }, { true, false, false, false, true },
+					{ true, true, true, true, true }, { true, false, false, false, true },
+					{ true, true, true, true, true } };
 			System.out.println("layoutnum: " + layoutIndex);
 			break;
 		case 4:
-			dungeonLayout = new boolean[][] {
-				{true, true, true, true, true},
-				{false, false, true, false, false},
-				{true, true, true, true, true},
-				{false, false, true, false, true},
-				{true, true, true, false, true}
-			};
+			dungeonLayout = new boolean[][] { { true, true, true, true, true }, { false, false, true, false, false },
+					{ true, true, true, true, true }, { false, false, true, false, true },
+					{ true, true, true, false, true } };
 			System.out.println("layoutnum: " + layoutIndex);
 			break;
 		case 5:
-			dungeonLayout = new boolean[][] {
-				{true, false, false, false, false},
-				{true, false, true, true, false},
-				{true, false, false, true, false},
-				{true, false, false, true, false},
-				{true, true, true, true, false}
-			};
+			dungeonLayout = new boolean[][] { { true, false, false, false, false }, { true, false, true, true, false },
+					{ true, false, false, true, false }, { true, false, false, true, false },
+					{ true, true, true, true, false } };
 			System.out.println("layoutnum: " + layoutIndex);
 			break;
 		}
-		
+
 		File file = new File("Mozart - Lacrimosa.mp3");
 		Player player = new Player(file.toURI().toString());
 		player.mediaPlayer.play();
@@ -107,8 +84,8 @@ public class Game extends Application {
 
 	@Override
 	/**
-	 * Override the start method from the application class is called by the launch method in main
-	 * also sets all of our scene elements
+	 * Override the start method from the application class is called by the launch
+	 * method in main also sets all of our scene elements
 	 * 
 	 * @param Stage the window provided by the application class
 	 */
@@ -116,13 +93,22 @@ public class Game extends Application {
 		arg0.setTitle("Angband 2019");
 		mapLayout = new GridPane();
 		testPlayer = new Character('@', 100, 100, 4, 4, "name");
-		testEnemy = new Enemy('$', 0, 0, 2, 2, "test");
+		testEnemy = new Enemy[5][5][5];
+		for (int i = 0; i < testEnemy.length; i++) {
+			for (int j = 0; j < testEnemy[i].length; j++) {
+				for (int g = 0; g < testEnemy[i][j].length; g++) {
+					testEnemy[i][j][g] = Enemy.generateEnemies();
+					testEnemy[i][j][g].setPosX(5);
+					testEnemy[i][j][g].setPosY(g + 2);
+				}
+			}
+		}
 		testRoom = new Room[5][5];
-		
+
 		menuLayout = new VBox();
 		menuControlsLayout = new GridPane();
 		menuInfoLayout = new VBox();
-		
+
 		controlLayout = new GridPane();
 		controlLayout.setAlignment(Pos.CENTER);
 
@@ -130,7 +116,6 @@ public class Game extends Application {
 		sceneLayout.setAlignment(Pos.CENTER);
 
 		infoLayout = new ScrollPane();
-
 
 		logText = new Text("Action Log:");
 
@@ -172,11 +157,11 @@ public class Game extends Application {
 		openBestiary.setOnAction(e -> {
 			menuInfoText.setText("This is the Bestiary!!!");
 		});
-		
+
 		openInventory.setOnAction(e -> {
 			menuInfoText.setText("This is the inventory!!!");
 		});
-		
+
 		GridPane.setConstraints(openBestiary, 0, 0);
 		GridPane.setConstraints(openInventory, 1, 0);
 		menuInfoLayout.setMaxHeight(100);
@@ -230,7 +215,7 @@ public class Game extends Application {
 	private void setMapLayout() {
 		mapLayout.setPadding(new Insets(10, 10, 10, 10));
 		mapLayout.setHgap(5);
-		
+
 		for (int i = 0; i < testRoom.length; i++) {
 			for (int j = 0; j < testRoom[i].length; j++) {
 				if (dungeonLayout[i][j] == true) {
@@ -285,11 +270,12 @@ public class Game extends Application {
 	}
 
 	private void updateEnemies() {
-		try {
-			testRoom[Room.getCurrentRoomY()][Room.getCurrentRoomX()].placeObject(testEnemy);
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		for (Enemy l : testEnemy[Room.getCurrentRoomY()][Room.getCurrentRoomX()]) {
+			try {
+				l.move();
+				testRoom[Room.getCurrentRoomY()][Room.getCurrentRoomX()].placeObject(l);
+			} 
+			catch (Exception e) {}
 		}
 	}
 
@@ -348,6 +334,7 @@ public class Game extends Application {
 
 	/**
 	 * load the room from our room array
+	 * 
 	 * @param message message for the program log
 	 */
 	public void loadRoom(String message) {
@@ -356,26 +343,23 @@ public class Game extends Application {
 			Room.moveRight();
 			testPlayer.setPosX(1);
 			testPlayer.setPosY(4);
-		}
-		else if (testPlayer.getPosX() == 0) {
+		} else if (testPlayer.getPosX() == 0) {
 			Room.moveLeft();
 			testPlayer.setPosX(7);
 			testPlayer.setPosY(4);
-		}
-		else if (testPlayer.getPosY() == 0) {
+		} else if (testPlayer.getPosY() == 0) {
 			Room.moveUp();
 			testPlayer.setPosX(4);
 			testPlayer.setPosY(7);
-		}
-		else if (testPlayer.getPosY() == testRoom[Room.getCurrentRoomY()][Room.getCurrentRoomX()].sizeX - 1){
+		} else if (testPlayer.getPosY() == testRoom[Room.getCurrentRoomY()][Room.getCurrentRoomX()].sizeX - 1) {
 			Room.moveDown();
 			testPlayer.setPosX(4);
 			testPlayer.setPosY(1);
 		}
-		
+
 		testRoom[Room.getCurrentRoomY()][Room.getCurrentRoomX()].setLayout();
 		testRoom[Room.getCurrentRoomY()][Room.getCurrentRoomX()].getLayout()[testPlayer.getPosX()][testPlayer
-			.getPosY()] = testPlayer.icon;
+				.getPosY()] = testPlayer.icon;
 	}
 
 	/**
@@ -425,7 +409,7 @@ public class Game extends Application {
 		downButton.setFont(new Font("Lucida Console", 18));
 		leftButton.setFont(new Font("Lucida Console", 18));
 		rightButton.setFont(new Font("Lucida Console", 18));
-		
+
 		GridPane.setConstraints(upButton, 1, 0);
 		GridPane.setConstraints(downButton, 1, 1);
 		GridPane.setConstraints(leftButton, 0, 1);

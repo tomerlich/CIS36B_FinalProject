@@ -17,7 +17,7 @@ public class Enemy extends Movement implements EnemyBehavior{
     
     public void randomMove() { 
     	Random r = new Random ();
-    	r.setSeed(System.currentTimeMillis());
+    	r.setSeed(System.nanoTime());
     	int i = r.nextInt(5);
     	if (i == 0) {
     		moveDown();
@@ -36,14 +36,15 @@ public class Enemy extends Movement implements EnemyBehavior{
     }
 
     public void move() {
-    	Character testPlayer = new Character();
-    	Enemy testEnemy = new Enemy();
-    	if (Math.abs(testPlayer.getPosX() - testEnemy.getPosX() + testPlayer.getPosY() - testEnemy.getPosY()) <= 5) {
-    		testEnemy.pursuePlayer();
-    	}
-    	else {
-    		testEnemy.randomMove();
-    	}
+    	//Character testPlayer = new Character();
+    	//Enemy testEnemy = new Enemy();
+    	//if (Math.abs(testPlayer.getPosX() - testEnemy.getPosX() + testPlayer.getPosY() - testEnemy.getPosY()) <= 5) {
+    		//testEnemy.pursuePlayer();
+    	//}
+    	//else {
+    		//testEnemy.randomMove();
+    	//}
+    	this.randomMove();
         
     }
     
@@ -67,6 +68,28 @@ public class Enemy extends Movement implements EnemyBehavior{
     		}
     	}
      }
+    
+    public static Enemy generateEnemies() {
+    	Random r = new Random();
+    	r.setSeed(System.nanoTime());
+    	int enemyNum = 0;
+    		enemyNum = r.nextInt(5);
+    		switch (enemyNum){
+    		case 0:
+    			return new Enemy('t', 30, 0, 0, 0, "Imp");
+    		case 1:
+    			return new Enemy('T', 30, 0, 0, 0, "Troll");
+    		case 2:
+    			return new Enemy('f', 30, 0, 0, 0, "Undead");
+    		case 3:
+    			return new Enemy('s', 30, 0, 0, 0, "Small bones");
+    		case 4:
+    			return new Enemy('$', 30, 0, 0, 0, "Giant bones");
+    		default:
+    			return new Enemy('Z', 15, 0, r.nextInt(6), r.nextInt(6), "Zombie");
+    		}
+    	
+    }
     
 }
 
