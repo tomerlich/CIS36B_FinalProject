@@ -126,7 +126,13 @@ public class Room {
 			this.layout[c.getPosX()][c.getPosY()] = c.icon;
 		}
 		else if(o instanceof Enemy) {
-			Movement m = (Movement) o;
+			Enemy m = (Enemy) o;
+			if (this.layout[m.getPosX()][m.getPosY()] == '#') {
+				throw new HitWallException("\nYou hit a wall");
+			}
+			if (this.checkDoor(m.getPosX(), m.getPosY())) {
+				throw new EnterNewRoomException("\nEntered a new room");
+			}
 			this.layout[m.getPosX()][m.getPosY()] = m.icon;
 		}
 	}

@@ -275,7 +275,15 @@ public class Game extends Application {
 				l.move();
 				testRoom[Room.getCurrentRoomY()][Room.getCurrentRoomX()].placeObject(l);
 			} 
-			catch (Exception e) {}
+			catch (Exception e) {
+				if (l.getPosX() == l.getPrevX()) {
+					l.setPosY(l.getPrevY());
+				} else
+					l.setPosX(l.getPrevX());
+				testRoom[Room.getCurrentRoomY()][Room.getCurrentRoomX()].getLayout()[l.getPosX()][l
+						.getPosY()] = l.icon;
+				//logText.setText(logText.getText() + e.getMessage());
+				}
 		}
 	}
 
