@@ -35,36 +35,30 @@ public class Enemy extends Movement implements EnemyBehavior{
     	}
     }
 
-    public void move() {
-    	//Character testPlayer = new Character();
-    	//Enemy testEnemy = new Enemy();
-    	//if (Math.abs(testPlayer.getPosX() - testEnemy.getPosX() + testPlayer.getPosY() - testEnemy.getPosY()) <= 5) {
-    		//testEnemy.pursuePlayer();
-    	//}
-    	//else {
-    		//testEnemy.randomMove();
-    	//}
-    	this.randomMove();
-        
+    public void move(Character testPlayer) {
+    	if (Math.abs(testPlayer.getPosX() - this.getPosX() + testPlayer.getPosY() - this.getPosY()) <= 1) {
+    		this.pursuePlayer(testPlayer);
+    	}
+    	else {
+    		this.randomMove();
+    	}
     }
     
-    public void pursuePlayer() {
-    	Character testPlayer = new Character();
-    	Enemy testEnemy = new Enemy();
-    	if (Math.abs(testPlayer.getPosX() - testEnemy.getPosX()) >= Math.abs(testPlayer.getPosY() - testEnemy.getPosY())) {
-    		if (testPlayer.getPosX() > testEnemy.getPosX()) {
-    			testEnemy.moveLeft();
+    public void pursuePlayer(Character testPlayer) {
+    	if (Math.abs(testPlayer.getPosX() - this.getPosX()) >= Math.abs(testPlayer.getPosY() - this.getPosY())) {
+    		if (testPlayer.getPosX() > this.getPosX()) {
+    			this.moveRight();
     		}
-    		else if (testPlayer.getPosX() < testEnemy.getPosX()) {
-    			testEnemy.moveRight();
+    		else if (testPlayer.getPosX() < this.getPosX()) {
+    			this.moveLeft();
     		}
     	}
-    	else if (Math.abs(testPlayer.getPosX() - testEnemy.getPosX()) < Math.abs(testPlayer.getPosY() - testEnemy.getPosY())) {
-    		if (testPlayer.getPosY() > testEnemy.getPosY()) {
-    			testEnemy.moveUP();	
+    	else if (Math.abs(testPlayer.getPosX() - this.getPosX()) < Math.abs(testPlayer.getPosY() - this.getPosY())) {
+    		if (testPlayer.getPosY() > this.getPosY()) {
+    			this.moveDown();	
     		}
-    		else if (testPlayer.getPosY() < testEnemy.getPosY()) {
-    			testEnemy.moveDown();	
+    		else if (testPlayer.getPosY() < this.getPosY()) {
+    			this.moveUP();	
     		}
     	}
      }
@@ -90,6 +84,18 @@ public class Enemy extends Movement implements EnemyBehavior{
     		}
     	
     }
+
+	@Override
+	public void move() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void pursuePlayer() {
+		// TODO Auto-generated method stub
+		
+	}
     
 }
 

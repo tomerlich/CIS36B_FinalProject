@@ -272,7 +272,7 @@ public class Game extends Application {
 	private void updateEnemies() {
 		for (Enemy l : testEnemy[Room.getCurrentRoomY()][Room.getCurrentRoomX()]) {
 			try {
-				l.move();
+				l.move(testPlayer);
 				testRoom[Room.getCurrentRoomY()][Room.getCurrentRoomX()].placeObject(l);
 			} 
 			catch (Exception e) {
@@ -368,6 +368,10 @@ public class Game extends Application {
 		testRoom[Room.getCurrentRoomY()][Room.getCurrentRoomX()].setLayout();
 		testRoom[Room.getCurrentRoomY()][Room.getCurrentRoomX()].getLayout()[testPlayer.getPosX()][testPlayer
 				.getPosY()] = testPlayer.icon;
+		for (Enemy e : testEnemy[Room.getCurrentRoomY()][Room.getCurrentRoomX()]) {
+			testRoom[Room.getCurrentRoomY()][Room.getCurrentRoomX()].getLayout()[e.getPosX()][e
+					.getPosY()] = e.icon;
+		}
 	}
 
 	/**
