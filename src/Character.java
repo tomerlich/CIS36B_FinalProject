@@ -101,7 +101,4 @@ public class Character {
 		this.setPosX(this.getPosX() + 1);
 	}
 
-	public int calculatePos() {
-		return (this.posX * this.posY) + (this.posY - 1);
-	}
 }

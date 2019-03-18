@@ -1,4 +1,4 @@
-import java.awt.Paint;
+import java.io.File;
 
 import javafx.application.Application;
 import javafx.geometry.Insets;
@@ -9,9 +9,9 @@ import javafx.scene.control.ScrollPane;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.media.Media;
 import javafx.scene.paint.Color;
-import javafx.scene.text.Font;
-import javafx.scene.text.Text;
+import javafx.scene.text.*;
 import javafx.stage.Stage;
 
 public class Game extends Application {
@@ -25,96 +25,10 @@ public class Game extends Application {
 	private Scene scene;
 	private VBox menuLayout, menuInfoLayout;
 	private boolean[][] dungeonLayout;
-
-	public Button getRightButton() {
-		return rightButton;
-	}
-
-	public void setRightButton(Button rightButton) {
-		this.rightButton = rightButton;
-	}
-
-	public Button getDownButton() {
-		return downButton;
-	}
-
-	public void setDownButton(Button downButton) {
-		this.downButton = downButton;
-	}
-
-	public Button getLeftButton() {
-		return leftButton;
-	}
-
-	public void setLeftButton(Button leftButton) {
-		this.leftButton = leftButton;
-	}
-
-	public Button getUpButton() {
-		return upButton;
-	}
-
-	public void setUpButton(Button upButton) {
-		this.upButton = upButton;
-	}
-
-	public Text getLogText() {
-		return logText;
-	}
-
-	public void setLogText(Text logText) {
-		this.logText = logText;
-	}
-
-	public Character getTestPlayer() {
-		return testPlayer;
-	}
-
-	public void setTestPlayer(Character testPlayer) {
-		this.testPlayer = testPlayer;
-	}
-
-	public GridPane getMapLayout() {
-		return mapLayout;
-	}
-
-	public void setMapLayout(GridPane mapLayout) {
-		this.mapLayout = mapLayout;
-	}
-
-	public GridPane getControlLayout() {
-		return controlLayout;
-	}
-
-	public void setControlLayout(GridPane controlLayout) {
-		this.controlLayout = controlLayout;
-	}
-
-	public GridPane getSceneLayout() {
-		return sceneLayout;
-	}
-
-	public void setSceneLayout(GridPane sceneLayout) {
-		this.sceneLayout = sceneLayout;
-	}
-
-	public ScrollPane getInfoLayout() {
-		return infoLayout;
-	}
-
-	public void setInfoLayout(ScrollPane infoLayout) {
-		this.infoLayout = infoLayout;
-	}
-
-	public VBox getMenuLayout() {
-		return menuInfoLayout;
-	}
-
-	public void setMenuLayout(VBox menuLayout) {
-		this.menuInfoLayout = menuLayout;
-	}
-
 	public static void main(String[] Args) {
+		File file = new File("Mozart - Lacrimosa.mp3");
+		Player player = new Player(file.toURI().toString());
+		player.mediaPlayer.play();
 		launch(Args);
 	}
 
