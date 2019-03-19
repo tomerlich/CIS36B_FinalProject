@@ -1,65 +1,30 @@
 
 public class Weapon extends Equip implements Item, Comparable<Weapon>{
-	private double totAttack, totMagicAttack;
-	private double attack, magicAttack;
+	private double attack;
 	private  int durability;
 	private String rarity, weaponType;
 	private boolean mainWeapon;
 
 	/**
-	 *
+	 * Default constructor for Weapon.
 	 */
 	public Weapon() {
-		this(0, 0, 0, "Unknown Rarity", "Unknown Weapon Type", false);
+		this(0, 0, "Unknown Rarity", "Unknown Weapon Type", false, false);
 	}
 
 	/**
-	 *
-	 * @param attack
-	 * @param magicAttack
-	 * @param durability
-	 * @param rarity
-	 * @param weaponType
-	 * @param mainWeapon
+	 * Constructor for Weapon.
+	 * @param attack the attack
+	 * @param durability the durability
+	 * @param rarity the rarity
+	 * @param weaponType the weapon type
+	 * @param mainWeapon identifies whether it's the main or sub weapon
 	 */
-	public Weapon(int attack, int magicAttack, int durability, String rarity, String weaponType, boolean mainWeapon) {
-		super(durability, rarity);
+	public Weapon(int attack, int durability, String rarity, String weaponType, boolean mainWeapon, boolean equip) {
+		super(durability, rarity, equip);
 		this.attack = multiplier(rarity, attack);
-		this.magicAttack = multiplier(rarity, magicAttack);
 		this.weaponType = weaponType;
 		this.mainWeapon = mainWeapon;
-	}
-
-	/**
-	 *
-	 * @return
-	 */
-	public double getTotAttack() {
-		return totAttack;
-	}
-
-	/**
-	 *
-	 * @param totAttack
-	 */
-	public void setTotAttack(int totAttack) {
-		this.totAttack = totAttack;
-	}
-
-	/**
-	 *
-	 * @return
-	 */
-	public double getTotMagicAttack() {
-		return totMagicAttack;
-	}
-
-	/**
-	 *
-	 * @param totMagicAttack
-	 */
-	public void setTotMagicAttack(int totMagicAttack) {
-		this.totMagicAttack = totMagicAttack;
 	}
 
 	/**
@@ -76,22 +41,6 @@ public class Weapon extends Equip implements Item, Comparable<Weapon>{
 	 */
 	public void setAttack(int attack) {
 		this.attack = attack;
-	}
-
-	/**
-	 *
-	 * @return
-	 */
-	public double getMagicAttack() {
-		return magicAttack;
-	}
-
-	/**
-	 *
-	 * @param magicAttack
-	 */
-	public void setMagicAttack(int magicAttack) {
-		this.magicAttack = magicAttack;
 	}
 
 	/**
@@ -160,32 +109,27 @@ public class Weapon extends Equip implements Item, Comparable<Weapon>{
 
 	/**
 	 *
-	 * @param arg0
+	 * @param w
 	 * @return
 	 */
 	@Override
-	public int compareTo(Weapon arg0) {
-		// TODO Auto-generated method stub
-		return 0;
+	public int compareTo(Weapon w) {
+		if(this.equals(w)) {
+			return 0;
+		} else if(!this.weaponType.equals(w.weaponType)) {
+			return this.weaponType.compareTo(w.weaponType);
+		} else {
+			return Double.compare(this.attack, w.attack);
+		}
 	}
 
 	/**
 	 *
 	 */
 	@Override
-	public void use() {
-		// TODO Auto-generated method stub
-		
-	}
-
-	/**
-	 *
-	 * @return
-	 */
-	@Override
-	public int count() {
-		// TODO Auto-generated method stub
-		return 0;
+	public int use() {
+		this.equipItem();
+		return (int) this.attack;
 	}
 
 	/**
@@ -205,7 +149,6 @@ public class Weapon extends Equip implements Item, Comparable<Weapon>{
 	public String toString() {
 		return "Weapon Type: " + this.weaponType +
 				"\nAttack: " + this.attack +
-				"\nMagic Attack: " + this.magicAttack +
 				super.toString() +
 				"\nMain Weapon: " + this.mainWeapon;
 	}

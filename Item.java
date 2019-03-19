@@ -1,6 +1,6 @@
 
 public interface Item {
-	int count();
-	void use();
+	//int count();
+	int use();
 	void delete();
 }

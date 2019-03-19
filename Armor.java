@@ -2,253 +2,101 @@
  *
  */
 
-public class Armor extends Equip implements Item {
-    private double totHP, totMana, totDefense, totSpeed, totDodge;
-    private double HP, mana, defense, speed, dodge;
+public class Armor extends Equip implements Item, Comparable<Armor> {
+    private double defense;
     private int durability;
     String rarity, armorType;
 
     /**
-     *
+     * Default constructor for Armor.
      */
     public Armor() {
-        this(0, 0, 0,0, 0, 0,"Unknown Rarity", "Unknown Armor Type");
+        this(0, 0,"Unknown Rarity", "Unknown Armor Type", false);
     }
 
     /**
-     *
-     * @param HP
-     * @param mana
-     * @param defense
-     * @param speed
-     * @param dodge
-     * @param durability
-     * @param rarity
-     * @param armorType
+     * Constructor for Armor.
+     * @param defense the defense
+     * @param durability the durability
+     * @param rarity the rarity
+     * @param armorType the armor type
      */
-    public Armor(int HP, int mana, int defense, int speed, int dodge, int durability, String rarity, String armorType) {
-        super(durability, rarity);
-        this.HP = multiplier(rarity, HP);
-        this.mana = multiplier(rarity, mana);
+    public Armor(int defense, int durability, String rarity, String armorType, boolean equip) {
+        super(durability, rarity, equip);
         this.defense = multiplier(rarity, defense);
-        this.speed = multiplier(rarity, speed);
-        this.dodge = multiplier(rarity, dodge);
         this.armorType = armorType;
     }
 
     /**
-     *
-     * @return
-     */
-    public double getTotHP() {
-        return totHP;
-    }
-
-    /**
-     *
-     * @param totHP
-     */
-    public void setTotHP(int totHP) {
-        this.totHP = totHP;
-    }
-
-    /**
-     *
-     * @return
-     */
-    public double getTotMana() {
-        return totMana;
-    }
-
-    /**
-     *
-     * @param totMana
-     */
-    public void setTotMana(int totMana) {
-        this.totMana = totMana;
-    }
-
-    /**
-     *
-     * @return
-     */
-    public double getTotDefense() {
-        return totDefense;
-    }
-
-    /**
-     *
-     * @param totDefense
-     */
-    public void setTotDefense(int totDefense) {
-        this.totDefense = totDefense;
-    }
-
-    /**
-     *
-     * @return
-     */
-    public double getTotSpeed() {
-        return totSpeed;
-    }
-
-    /**
-     *
-     * @param totSpeed
-     */
-    public void setTotSpeed(int totSpeed) {
-        this.totSpeed = totSpeed;
-    }
-
-    /**
-     *
-     * @return
-     */
-    public double getTotDodge() {
-        return totDodge;
-    }
-
-    /**
-     *
-     * @param totDodge
-     */
-    public void setTotDodge(int totDodge) {
-        this.totDodge = totDodge;
-    }
-
-    /**
-     *
-     * @return
-     */
-    public double getHP() {
-        return HP;
-    }
-
-    /**
-     *
-     * @param HP
-     */
-    public void setHP(int HP) {
-        this.HP = HP;
-    }
-
-    /**
-     *
-     * @return
-     */
-    public double getMana() {
-        return mana;
-    }
-
-    /**
-     *
-     * @param mana
-     */
-    public void setMana(int mana) {
-        this.mana = mana;
-    }
-
-    /**
-     *
-     * @return
+     * Gives you the amount of boosted defense the armor gives.
+     * @return the defense
      */
     public double getDefense() {
         return defense;
     }
 
     /**
-     *
-     * @param defense
+     * Assigns the defense to the piece of armor.
+     * @param defense the defense
      */
     public void setDefense(int defense) {
         this.defense = defense;
     }
 
     /**
-     *
-     * @return
-     */
-    public double getSpeed() {
-        return speed;
-    }
-
-    /**
-     *
-     * @param speed
-     */
-    public void setSpeed(int speed) {
-        this.speed = speed;
-    }
-
-    /**
-     *
-     * @return
-     */
-    public double getDodge() {
-        return dodge;
-    }
-
-    /**
-     *
-     * @param dodge
-     */
-    public void setDodge(int dodge) {
-        this.dodge = dodge;
-    }
-
-    /**
-     *
-     * @return
+     * Gives you the amount of durability the armor has.
+     * @return the durability
      */
     public int getDurability() {
         return durability;
     }
 
     /**
-     *
-     * @param durability
+     * Assigns the durability to the armor.
+     * @param durability the durability
      */
     public void setDurability(int durability) {
         this.durability = durability;
     }
 
     /**
-     *
-     * @return
+     * Gives you the rarity of the armor.
+     * @return the rarity
      */
     public String getRarity() {
         return rarity;
     }
 
     /**
-     *
-     * @param rarity
+     * Assigns the rarity to the armor.
+     * @param rarity the rarity
      */
     public void setRarity(String rarity) {
         this.rarity = rarity;
     }
 
     /**
-     *
-     * @return
+     * Gives you the type of armor it is.
+     * @return the type of armor
      */
     public String getArmorType() {
         return armorType;
     }
 
     /**
-     *
-     * @param armorType
+     * Assigns the identification of the type of armor to the armor.
+     * @param armorType the type of armor
      */
     public void setArmorType(String armorType) {
         this.armorType = armorType;
     }
 
     /**
-     *
+     * Uses the Armor.
      */
-    public void use() {
-
+    public int use() {
+        this.equipItem();
+        return (int)defense;
     }
 
     /**
@@ -258,12 +106,14 @@ public class Armor extends Equip implements Item {
 
     }
 
-    /**
-     *
-     * @return
-     */
-    public int count() {
-        return 0;
+    public int compareTo(Armor a) {
+        if(this.equals(a)) {
+            return 0;
+        } else if(!this.armorType.equals(a.armorType)) {
+            return this.armorType.compareTo(a.armorType);
+        } else {
+            return Double.compare(this.defense, a.defense);
+        }
     }
 
     /**
@@ -273,11 +123,7 @@ public class Armor extends Equip implements Item {
     @Override
     public String toString() {
         return "Armor Type: " + this.armorType +
-                "\nHP: " + this.HP +
-                "\nMana: " + this.mana +
                 "\nDefense: " + this.defense +
-                "\nSpeed: " + this.speed +
-                "\nDodge: " + this.dodge +
                 super.toString();
     }
 

@@ -1,30 +1,29 @@
+/**
+ *
+ */
 
 
+public class Consumable implements Item, Comparable<Consumable>{
 
-
-public class Consumable implements Item{
-
-    int healHP, healMana, statBoost;
+    int healHP, statBoost;
     String size, consumableType;
 
     /**
      *
      */
     public Consumable() {
-        this(0, 0, 0, "Unknown Size", "Unknown Type");
+        this(0, 0, "Unknown Size", "Unknown Type");
     }
 
     /**
      *
      * @param healHP
-     * @param healMana
      * @param statBoost
      * @param size
      * @param consumableType
      */
-    public Consumable(int healHP, int healMana, int statBoost, String size, String consumableType) {
+    public Consumable(int healHP, int statBoost, String size, String consumableType) {
         this.healHP = scale(size, healHP);
-        this.healMana = scale(size, healMana);
         this.statBoost = scale(size, statBoost);
         this.size = size;
         this.consumableType = consumableType;
@@ -44,22 +43,6 @@ public class Consumable implements Item{
      */
     public void setHealHP(int healHP) {
         this.healHP = healHP;
-    }
-
-    /**
-     *
-     * @return
-     */
-    public int getHealMana() {
-        return healMana;
-    }
-
-    /**
-     *
-     * @param healMana
-     */
-    public void setHealMana(int healMana) {
-        this.healMana = healMana;
     }
 
     /**
@@ -106,19 +89,14 @@ public class Consumable implements Item{
 
     /**
      *
-     * @return
      */
     @Override
-    public int count() {
-        return 0;
-    }
-
-    /**
-     *
-     */
-    @Override
-    public void use() {
-
+    public int use() {
+        if(consumableType.equalsIgnoreCase("Health Pot")) {
+            return this.healHP;
+        } else {
+            return this.statBoost;
+        }
     }
 
     /**
@@ -129,6 +107,19 @@ public class Consumable implements Item{
 
     }
 
+    public int compareTo(Consumable c) {
+        if(this.equals(c)) {
+            return 0;
+        } else if(!this.consumableType.equals(c.consumableType)) {
+            return this.consumableType.compareTo(c.consumableType);
+        } else if(this.healHP != c.healHP) {
+            return Double.compare(this.healHP, c.healHP);
+        } else {
+            return Double.compare(this.statBoost, c.statBoost);
+        }
+    }
+
+
     /**
      *
      * @return
@@ -137,7 +128,6 @@ public class Consumable implements Item{
     public String toString() {
         return "Consumable Type: " + this.consumableType +
                 "\nHP: " + this.healHP +
-                "\nMana: " + this.healMana +
                 "\nStat Boost: " + this.statBoost +
                 "\nSize: " + this.size;
     }

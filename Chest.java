@@ -2,14 +2,6 @@ import java.util.ArrayList;
 import java.util.Random;
 
 public class Chest {
-    private final int attack = 25;
-    private final int magicAttack = 25;
-    private final int HP = 100;
-    private final int mana = 50;
-    private final int defense = 50;
-    private final int speed = 20;
-    private final int dodge = 20;
-    private final int durability = 100;
 
     private boolean open = false;
     private ArrayList<Item> chestItems = new ArrayList<>();
@@ -20,53 +12,53 @@ public class Chest {
     private String rarity, size;
 
     /**
-     *
+     * Default constructor for Chest.
      */
     public Chest() {
         this(false);
     }
 
     /**
-     *
-     * @param open
+     * Constructor for Chest.
+     * @param open the status of whether the chest is open or not
      */
     public Chest(boolean open) {
         this.open = open;
     }
 
     /**
-     *
-     * @param chestItems
+     * Assigns some chest items to the chest.
+     * @param chestItems an Item arraylist
      */
     public void setChestItems(ArrayList<Item> chestItems) {
         this.chestItems = chestItems;
     }
 
     /**
-     *
-     * @return
+     * Gives us the chest items arraylist.
+     * @return the chest item arraylist
      */
     public ArrayList<Item> getChestItems() {
         return chestItems;
     }
 
     /**
-     * Opens up the chest
+     * Opens up the chest.
      */
     public void openChest() {
         open = true;
     }
 
     /**
-     * Checks to see if chest is open or not
-     * @return the chest is open
+     * Checks to see if chest is open or not.
+     * @return the status of whether the chest is open or not
      */
     public boolean isOpen() {
         return open;
     }
 
     /**
-     * Fills the chest up with items
+     * Fills the chest up with items.
      */
     public void fillChest() {
 
@@ -83,23 +75,23 @@ public class Chest {
                 rarityType();
 
                 if(weaponType <= 25) {
-                    Equip sword = new Weapon(attack, 0, durability, rarity, "Sword", true);
+                    Weapon sword = new Weapon(25, 100, rarity, "Sword", true, false);
                     chestItems.add(sword);
-                } else if(weaponType <= 45) {
-                    Equip staff = new Weapon(0, magicAttack, durability, rarity, "Staff", true);
-                    chestItems.add(staff);
-                } else if(weaponType <= 65) {
-                    Equip bowArrow = new Weapon(attack - 10, magicAttack - 15, durability, rarity, "Bow & Arrow", true);
-                    chestItems.add(bowArrow);
-                } else if(weaponType <= 75) {
-                    Equip dagger = new Weapon(attack - 15, 0, durability, rarity, "Dagger", false);
+                } else if(weaponType <= 50) {
+                    Weapon spear = new Weapon(25, 100, rarity, "Spear", true, false);
+                    chestItems.add(spear);
+                } else if(weaponType <= 70) {
+                    Weapon mace = new Weapon(25, 100, rarity, "Mace", true, false);
+                    chestItems.add(mace);
+                } else if(weaponType <= 80) {
+                    Weapon dagger = new Weapon(10, 100, rarity, "Dagger", false, false);
                     chestItems.add(dagger);
                 } else if(weaponType <= 90) {
-                    Equip grimoire = new Weapon(0, magicAttack - 15, durability, rarity, "Grimoire", false);
-                    chestItems.add(grimoire);
+                    Weapon brassKnuckles = new Weapon(10, 100, rarity, "Brass Knuckles", false, false);
+                    chestItems.add(brassKnuckles);
                 } else {
-                    Equip slingshot = new Weapon(attack - 15, magicAttack - 20, durability, rarity, "Slingshot", false);
-                    chestItems.add(slingshot);
+                    Weapon hammer = new Weapon(10, 100, rarity, "Hammer", false, false);
+                    chestItems.add(hammer);
                 }
 
             } else if(ratePercentage <= 50) {
@@ -107,16 +99,16 @@ public class Chest {
                 rarityType();
 
                 if(armorType <= 25) {
-                    Equip helmet = new Armor(HP - 95,  mana, defense - 25, 0, 0, durability, rarity, "Helmet");
+                    Armor helmet = new Armor(10, 100, rarity, "Helmet", false);
                     chestItems.add(helmet);
                 } else if(armorType <= 50) {
-                    Equip chestArmor = new Armor(HP, 0 ,defense, 0, 0, durability, rarity, "Chest Armor");
+                    Armor chestArmor = new Armor(20,  100, rarity, "Chest Armor", false);
                     chestItems.add(chestArmor);
                 } else if(armorType <= 75) {
-                    Equip legArmor = new Armor(HP - 85, mana - 40, defense - 25, 0, dodge, durability, rarity, "Leg Armor");
+                    Armor legArmor = new Armor(10, 100, rarity, "Leg Armor", false);
                     chestItems.add(legArmor);
                 } else {
-                    Equip boots = new Armor(HP - 95, 0,defense - 25, speed, 0, durability, rarity, "Boots");
+                    Armor boots = new Armor(10, 100, rarity, "Boots", false);
                     chestItems.add(boots);
                 }
 
@@ -124,14 +116,11 @@ public class Chest {
                 consumableType = rand.nextInt(100) + 1;
                 sizeType();
 
-                if(consumableType <= 35) {
-                    Consumable healthPot = new Consumable(100, 0, 0, size, "Health Pot");
+                if(consumableType <= 80) {
+                    Consumable healthPot = new Consumable(100, 0, size, "Health Pot");
                     chestItems.add(healthPot);
-                } else if(consumableType <= 70) {
-                    Consumable manaPot = new Consumable(0, 100, 0, size, "Mana Pot");
-                    chestItems.add(manaPot);
                 } else {
-                    Consumable statBooster = new Consumable(0, 0, 10, size, "Stat Boost Drink");
+                    Consumable statBooster = new Consumable(0, 2, size, "Stat Boost Drink");
                     chestItems.add(statBooster);
                 }
             }
@@ -141,18 +130,18 @@ public class Chest {
     }
 
     /**
-     *
+     * Randomizes the amount of items that will be in the chest.
      */
     public void quantityItems() {
         ratePercentage = rand.nextInt(100) + 1;
 
-        if(ratePercentage <= 5) {
+        if(ratePercentage <= 20) {
             itemsInChest = 1;
-        } else if(ratePercentage <= 25) {
+        } else if(ratePercentage <= 70) {
             itemsInChest = 2;
-        } else if(ratePercentage <= 75) {
+        } else if(ratePercentage <= 90) {
             itemsInChest = 3;
-        } else if(ratePercentage <= 95) {
+        } else if(ratePercentage <= 99) {
             itemsInChest = 4;
         } else {
             itemsInChest = 5;
@@ -160,7 +149,7 @@ public class Chest {
     }
 
     /**
-     *
+     * Randomizes the rarity of the weapon and armor equipment.
      */
     public void rarityType() {
         ratePercentage = rand.nextInt(100) + 1;
@@ -169,7 +158,7 @@ public class Chest {
             rarity = "Common";
         } else if(ratePercentage <= 70) {
             rarity = "Uncommon";
-        } else if(ratePercentage <= 80) {
+        } else if(ratePercentage <= 90) {
             rarity = "Rare";
         } else if(ratePercentage <= 99) {
             rarity = "Epic";
@@ -179,7 +168,7 @@ public class Chest {
     }
 
     /**
-     *
+     * Randomizes the size of the consumable items.
      */
     public void sizeType() {
         ratePercentage = rand.nextInt(100) + 1;
