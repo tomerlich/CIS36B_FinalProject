@@ -1,3 +1,6 @@
+/**
+ *
+ */
 
 public class Weapon extends Equip implements Item, Comparable<Weapon>{
 	private double attack;
@@ -28,91 +31,94 @@ public class Weapon extends Equip implements Item, Comparable<Weapon>{
 	}
 
 	/**
-	 *
-	 * @return
+	 * Give the attack strength that the weapon provides.
+	 * @return the attack
 	 */
 	public double getAttack() {
 		return attack;
 	}
 
 	/**
-	 *
-	 * @param attack
+	 * Assigns the attack to the weapon.
+	 * @param attack the attack
 	 */
 	public void setAttack(int attack) {
 		this.attack = attack;
 	}
 
 	/**
-	 *
-	 * @return
+	 * Gives the durability of the weapon.
+	 * @return the durability
 	 */
 	public int getDurability() {
 		return durability;
 	}
 
 	/**
-	 *
-	 * @param durability
+	 * Assigns the durability to the weapon.
+	 * @param durability the durability
 	 */
 	public void setDurability(int durability) {
 		this.durability = durability;
 	}
 
 	/**
-	 *
-	 * @return
+	 * Gives the rarity of the weapon.
+	 * @return the rarity
 	 */
 	public String getRarity() {
 		return rarity;
 	}
 
 	/**
-	 *
-	 * @param rarity
+	 * Assigns the rarity to the weapon.
+	 * @param rarity the rarity
 	 */
 	public void setRarity(String rarity) {
 		this.rarity = rarity;
 	}
 
 	/**
-	 *
-	 * @return
+	 * Gives us the type of weapon it is.
+	 * @return the weapon type
 	 */
 	public String getWeaponType() {
 		return weaponType;
 	}
 
 	/**
-	 *
-	 * @param weaponType
+	 * Assigns the type of weapon to the weapon.
+	 * @param weaponType the weapon type
 	 */
 	public void setWeaponType(String weaponType) {
 		this.weaponType = weaponType;
 	}
 
 	/**
-	 *
-	 * @return
+	 * Gives us the information to figure out whether the weapon is a main weapon or sub weapon.
+	 * @return the boolean value for if it is a main weapon
 	 */
 	public boolean isMainWeapon() {
 		return mainWeapon;
 	}
 
 	/**
-	 *
-	 * @param mainWeapon
+	 * Assigns whether it is a main weapon or not to main weapon.
+	 * @param mainWeapon the boolean value for if it is a main weapon
 	 */
 	public void setMainWeapon(boolean mainWeapon) {
 		this.mainWeapon = mainWeapon;
 	}
 
 	/**
+	 * Compares another weapon to the current one.
+	 * First compares it by the names/type of the weapon.
+	 * Second compares it by the damage that the weapon deals.
+	 * (The higher the damage the rarer the weapon is.)
 	 *
-	 * @param w
-	 * @return
+	 * @param w the weapon that is to be compared
+	 * @return the integer value that will reveal which weapon comes before the other
 	 */
-	@Override
 	public int compareTo(Weapon w) {
 		if(this.equals(w)) {
 			return 0;
@@ -124,7 +130,7 @@ public class Weapon extends Equip implements Item, Comparable<Weapon>{
 	}
 
 	/**
-	 *
+	 * Uses the weapon by equipping it and then return its attack value.
 	 */
 	@Override
 	public int use() {
@@ -133,17 +139,37 @@ public class Weapon extends Equip implements Item, Comparable<Weapon>{
 	}
 
 	/**
-	 *
+	 * Deletes the weapon by setting its values equal to 0.
 	 */
 	@Override
 	public void delete() {
-		// TODO Auto-generated method stub
-		
+		this.attack = 0;
+		this.durability = 0;
+		this.weaponType = "DESTROYED";
+		this.rarity = "NO RARITY";
+		this.mainWeapon = false;
 	}
 
 	/**
-	 *
-	 * @return
+	 * Compares the two weapons to see if they are the same.
+	 * @param o the weapon to be compared with
+	 * @return a boolean value that equates to true if they are the same and false if they are not
+	 */
+	@Override
+	public boolean equals(Object o) {
+		if(this == o) {
+			return true;
+		} else if(!(o instanceof Weapon)) {
+			return false;
+		} else {
+			Weapon w = (Weapon) o;
+			return this.attack == w.attack && this.durability == w.durability && this.weaponType.equals(w.weaponType) && this.rarity.equals(w.rarity) && this.mainWeapon == w.mainWeapon && this.isEquipped() == w.isEquipped();
+		}
+	}
+
+	/**
+	 * Gives us the toString of the Weapon class. Has information regarding the weapon.
+	 * @return the toString of the Weapon class
 	 */
 	@Override
 	public String toString() {

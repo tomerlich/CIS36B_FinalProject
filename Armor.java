@@ -92,7 +92,7 @@ public class Armor extends Equip implements Item, Comparable<Armor> {
     }
 
     /**
-     * Uses the Armor.
+     * Uses the armor by equipping it and then return its defense value.
      */
     public int use() {
         this.equipItem();
@@ -100,12 +100,20 @@ public class Armor extends Equip implements Item, Comparable<Armor> {
     }
 
     /**
-     *
+     * Deletes the armor by setting its values equal to 0.
      */
     public void delete() {
-
+        this.defense = 0;
+        this.durability = 0;
+        this.armorType = "DESTROYED";
+        this.rarity = "NO RARITY";
     }
 
+    /**
+     *
+     * @param a
+     * @return
+     */
     public int compareTo(Armor a) {
         if(this.equals(a)) {
             return 0;
@@ -117,8 +125,25 @@ public class Armor extends Equip implements Item, Comparable<Armor> {
     }
 
     /**
-     *
-     * @return
+     * Compares the two pieces of armor to see if they are the same.
+     * @param o the armor to be compared with
+     * @return a boolean value that equates to true if they are the same and false if they are not
+     */
+    @Override
+    public boolean equals(Object o) {
+        if(this == o) {
+            return true;
+        } else if(!(o instanceof Armor)) {
+            return false;
+        } else {
+            Armor a = (Armor) o;
+            return this.defense == a.defense && this.durability == a.durability && this.armorType.equals(a.armorType) && this.rarity.equals(a.rarity) && this.isEquipped() == a.isEquipped();
+        }
+    }
+
+    /**
+     * Gives us the toString of the Armor class. Has information regarding the armor.
+     * @return the toString of the Armor class
      */
     @Override
     public String toString() {
