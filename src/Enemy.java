@@ -36,8 +36,15 @@ public class Enemy extends Movement implements EnemyBehavior{
     }
 
     public void move(Character testPlayer) {
-    	if (Math.abs(testPlayer.getPosX() - this.getPosX() + testPlayer.getPosY() - this.getPosY()) <= 1) {
-    		this.pursuePlayer(testPlayer);
+    	Random r = new Random();
+    	int i = r.nextInt(3);
+    	if (Math.abs(testPlayer.getPosX() - this.getPosX() + testPlayer.getPosY() - this.getPosY()) <= 4) {
+    		if (i <= 1) {
+    			this.pursuePlayer(testPlayer);
+    		}
+    		else {
+    			this.randomMove();
+    		}
     	}
     	else {
     		this.randomMove();
@@ -46,14 +53,14 @@ public class Enemy extends Movement implements EnemyBehavior{
     
     public void pursuePlayer(Character testPlayer) {
     	if (Math.abs(testPlayer.getPosX() - this.getPosX()) >= Math.abs(testPlayer.getPosY() - this.getPosY())) {
-    		if (testPlayer.getPosX() > this.getPosX()) {
+    		if (testPlayer.getPosX() - this.getPosX() == 1) {
     			this.moveRight();
     		}
     		else if (testPlayer.getPosX() < this.getPosX()) {
     			this.moveLeft();
     		}
     	}
-    	else if (Math.abs(testPlayer.getPosX() - this.getPosX()) < Math.abs(testPlayer.getPosY() - this.getPosY())) {
+    	else if (Math.abs(testPlayer.getPosX() - this.getPosX()) <= Math.abs(testPlayer.getPosY() - this.getPosY())) {
     		if (testPlayer.getPosY() > this.getPosY()) {
     			this.moveDown();	
     		}
@@ -68,7 +75,7 @@ public class Enemy extends Movement implements EnemyBehavior{
     	r.setSeed(System.nanoTime());
     	int enemyNum = 0;
     		enemyNum = r.nextInt(5);
-    		switch (enemyNum){
+    		switch (enemyNum) {
     		case 0:
     			return new Enemy('t', 30, 0, 0, 0, "Imp");
     		case 1:
