@@ -12,7 +12,7 @@ public class Player{
 	public Player(String title) {
 		media = new Media(title);
 		mediaPlayer = new MediaPlayer(media);
-		mediaPlayer.setVolume(5);
+		mediaPlayer.setVolume(0.5);
 		mediaPlayer.setAutoPlay(true);
 		mediaPlayer.setCycleCount(MediaPlayer.INDEFINITE);
 	}

@@ -1,10 +1,11 @@
 import java.util.ArrayList;
 
-public class Character {
+public class Character extends Movement{
 	public char icon;
 	public String name;
 	private int hp, mp, posX, posY, prevX, prevY;
 	private ArrayList<Item> inventory;
+	private Item weapon;
 	
 	public Character() {
 		this(' ', 0, 0, 0, 0, "no name");
@@ -99,6 +100,17 @@ public class Character {
 	public void moveRight() {
 		this.setPosY(this.getPosY());
 		this.setPosX(this.getPosX() + 1);
+	}
+
+	public void combatEvent(Enemy e) {
+		e.setHp(e.getHp() - 5);
+		this.setHp(this.hp - 5);
+		if (this.hp < 0) {
+			System.exit(0);
+		}
+		else if (e.getHp() < 0) {
+			e.delete();
+		}
 	}
 
 }

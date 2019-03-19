@@ -120,6 +120,9 @@ public class Room {
 			if (this.layout[c.getPosX()][c.getPosY()] == '#') {
 				throw new HitWallException("\nYou hit a wall");
 			}
+			if (this.layout[c.getPosX()][c.getPosY()] != ' ') {
+				throw new CombatException();
+			}
 			if (this.checkDoor(c.getPosX(), c.getPosY())) {
 				throw new EnterNewRoomException("\nEntered a new room");
 			}
@@ -127,9 +130,6 @@ public class Room {
 		}
 		else if(o instanceof Enemy) {
 			Enemy m = (Enemy) o;
-			if (this.layout[m.getPosX()][m.getPosY()] == '@') {
-				throw new CombatException();
-			}
 			if (this.layout[m.getPosX()][m.getPosY()] != ' ') {
 				throw new HitWallException("\nYou hit a wall");
 			}

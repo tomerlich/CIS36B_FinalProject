@@ -96,6 +96,17 @@ public class Enemy extends Movement implements EnemyBehavior{
 		// TODO Auto-generated method stub
 		
 	}
+
+	public String getName() {
+		// TODO Auto-generated method stub
+		return this.name;
+	}
+
+	public void delete() {
+		this.icon = '#';
+		this.setPosX(0);
+		this.setPosY(0);
+	}
     
 }
 

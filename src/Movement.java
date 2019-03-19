@@ -1,6 +1,6 @@
 import java.util.ArrayList;
 
-public class Movement {
+public abstract class Movement {
 
 	public char icon;
 

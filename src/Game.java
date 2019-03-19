@@ -42,37 +42,31 @@ public class Game extends Application {
 			dungeonLayout = new boolean[][] { { true, false, true, true, true }, { true, false, true, false, true },
 					{ true, false, true, false, true }, { true, false, true, false, true },
 					{ true, true, true, false, true } };
-			System.out.println("layoutnum: " + layoutIndex);
 			break;
 		case 1:
 			dungeonLayout = new boolean[][] { { true, true, true, true, true }, { true, false, true, false, true },
 					{ true, false, true, false, true }, { true, false, true, false, true },
 					{ true, true, true, true, true } };
-			System.out.println("layoutnum: " + layoutIndex);
 			break;
 		case 2:
 			dungeonLayout = new boolean[][] { { true, true, true, true, true }, { false, false, false, false, true },
 					{ true, true, true, true, true }, { true, false, false, false, false },
 					{ true, true, true, true, true } };
-			System.out.println("layoutnum: " + layoutIndex);
 			break;
 		case 3:
 			dungeonLayout = new boolean[][] { { true, true, true, true, true }, { true, false, false, false, true },
 					{ true, true, true, true, true }, { true, false, false, false, true },
 					{ true, true, true, true, true } };
-			System.out.println("layoutnum: " + layoutIndex);
 			break;
 		case 4:
 			dungeonLayout = new boolean[][] { { true, true, true, true, true }, { false, false, true, false, false },
 					{ true, true, true, true, true }, { false, false, true, false, true },
 					{ true, true, true, false, true } };
-			System.out.println("layoutnum: " + layoutIndex);
 			break;
 		case 5:
 			dungeonLayout = new boolean[][] { { true, false, false, false, false }, { true, false, true, true, false },
 					{ true, false, false, true, false }, { true, false, false, true, false },
 					{ true, true, true, true, false } };
-			System.out.println("layoutnum: " + layoutIndex);
 			break;
 		}
 
@@ -92,8 +86,8 @@ public class Game extends Application {
 	public void start(Stage arg0) throws Exception {
 		arg0.setTitle("Angband 2019");
 		mapLayout = new GridPane();
-		testPlayer = new Character('@', 100, 100, 4, 4, "name");
-		testEnemy = new Enemy[5][5][5];
+		testPlayer = new Character('@', 100000, 100, 4, 4, "name");
+		testEnemy = new Enemy[5][5][1];
 		for (int i = 0; i < testEnemy.length; i++) {
 			for (int j = 0; j < testEnemy[i].length; j++) {
 				for (int g = 0; g < testEnemy[i][j].length; g++) {
@@ -139,7 +133,7 @@ public class Game extends Application {
 
 		sceneLayout.getChildren().addAll(mapLayout, controlLayout, infoLayout, menuLayout);
 
-		scene = new Scene(sceneLayout, 500, 500, Color.BLACK);
+		scene = new Scene(sceneLayout, 900, 900, Color.BLACK);
 		this.setKeyboardControls();
 
 		arg0.setScene(scene);
@@ -271,22 +265,31 @@ public class Game extends Application {
 
 	private void updateEnemies() {
 		for (Enemy l : testEnemy[Room.getCurrentRoomY()][Room.getCurrentRoomX()]) {
+			if (l.getHp() > 0) {
 			try {
 				l.move(testPlayer);
+				if (l.getPosX() == testPlayer.getPosX() && l.getPosY() == testPlayer.getPosY())
+					throw new CombatException("\nYou got in a fight with " + l.getName());
 				testRoom[Room.getCurrentRoomY()][Room.getCurrentRoomX()].placeObject(l);
-			} 
-			catch (CombatException ce) {
-				
 			}
-			catch (Exception e) {
+			catch (CombatException e) {
+				testPlayer.combatEvent(l);
 				if (l.getPosX() == l.getPrevX()) {
 					l.setPosY(l.getPrevY());
 				} else
 					l.setPosX(l.getPrevX());
 				testRoom[Room.getCurrentRoomY()][Room.getCurrentRoomX()].getLayout()[l.getPosX()][l
 						.getPosY()] = l.icon;
-				//logText.setText(logText.getText() + e.getMessage());
+				logText.setText(logText.getText() + e.getMessage());
+			}catch (Exception e) {
+				if (l.getPosX() == l.getPrevX()) {
+					l.setPosY(l.getPrevY());
+				} else
+					l.setPosX(l.getPrevX());
+				testRoom[Room.getCurrentRoomY()][Room.getCurrentRoomX()].getLayout()[l.getPosX()][l
+						.getPosY()] = l.icon;
 				}
+			}
 		}
 	}
 
@@ -372,8 +375,10 @@ public class Game extends Application {
 		testRoom[Room.getCurrentRoomY()][Room.getCurrentRoomX()].getLayout()[testPlayer.getPosX()][testPlayer
 				.getPosY()] = testPlayer.icon;
 		for (Enemy e : testEnemy[Room.getCurrentRoomY()][Room.getCurrentRoomX()]) {
+			if (e.getHp() > 0) {
 			testRoom[Room.getCurrentRoomY()][Room.getCurrentRoomX()].getLayout()[e.getPosX()][e
 					.getPosY()] = e.icon;
+			}
 		}
 	}
 
@@ -435,8 +440,8 @@ public class Game extends Application {
 	 * set the game log.
 	 */
 	private void setInfoLayout() {
-		infoLayout.setPrefViewportHeight(100);
-		infoLayout.setPrefViewportWidth(150);
+		infoLayout.setPrefViewportHeight(500);
+		infoLayout.setPrefViewportWidth(500);
 		infoLayout.setContent(logText);
 	}
 }
