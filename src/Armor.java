@@ -151,5 +151,10 @@ public class Armor extends Equip implements Item, Comparable<Armor> {
                 "\nDefense: " + this.defense +
                 super.toString();
     }
+	@Override
+	public int count() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
 
 }

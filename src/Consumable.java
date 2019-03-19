@@ -95,7 +95,6 @@ public class Consumable implements Item, Comparable<Consumable>{
     /**
      * Uses the potion by returning to us the value that it heals/boosts us by.
      */
-    @Override
     public int use() {
         if(consumableType.equalsIgnoreCase("Health Pot")) {
             return this.healHP;
@@ -163,4 +162,10 @@ public class Consumable implements Item, Comparable<Consumable>{
                 "\nStat Boost: " + this.statBoost +
                 "\nSize: " + this.size;
     }
+
+	@Override
+	public int count() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
 }

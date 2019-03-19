@@ -140,6 +140,12 @@ public class Room {
 		}
 	}
 
+	public void placeChest(Chest c) {
+		if (c.isFilled()) {
+			this.layout[7][7] = 'C';
+		}
+	}
+	
 	private boolean checkDoor(int posX, int posY) {
 		int position = (posX * 10) + posY;
 		for (int i = 0; i < this.numDoors; i++) {

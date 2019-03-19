@@ -26,14 +26,16 @@ public class Game extends Application {
 	private Room[][] testRoom;
 	private Character testPlayer;
 	private Enemy[][][] testEnemy;
+	private Chest[][][] testChest;
 	private GridPane mapLayout, controlLayout, sceneLayout, menuControlsLayout;
 	private ScrollPane infoLayout;
 	private Scene scene;
 	private VBox menuLayout, menuInfoLayout;
 	private static boolean[][] dungeonLayout;
+	private static Random r = new Random();
 
 	public static void main(String[] Args) {
-		Random r = new Random();
+		r = new Random();
 		r.setSeed(System.currentTimeMillis());
 		int layoutIndex = r.nextInt(6);
 
@@ -88,12 +90,19 @@ public class Game extends Application {
 		mapLayout = new GridPane();
 		testPlayer = new Character('@', 100000, 100, 4, 4, "name");
 		testEnemy = new Enemy[5][5][1];
+		testChest = new Chest[5][5][1];
 		for (int i = 0; i < testEnemy.length; i++) {
 			for (int j = 0; j < testEnemy[i].length; j++) {
 				for (int g = 0; g < testEnemy[i][j].length; g++) {
 					testEnemy[i][j][g] = Enemy.generateEnemies();
 					testEnemy[i][j][g].setPosX(5);
 					testEnemy[i][j][g].setPosY(g + 2);
+					testChest[i][j][g] = new Chest();
+					int chestSeed = r.nextInt(10000);
+					if ((chestSeed % 2) == 0) {
+						System.out.print(chestSeed + "hello\n");
+						testChest[i][j][g].fillChest();
+					}
 				}
 			}
 		}
@@ -149,11 +158,11 @@ public class Game extends Application {
 		Text menuInfoText = new Text();
 
 		openBestiary.setOnAction(e -> {
-			menuInfoText.setText("This is the Bestiary!!!");
+			
 		});
 
 		openInventory.setOnAction(e -> {
-			menuInfoText.setText("This is the inventory!!!");
+			
 		});
 
 		GridPane.setConstraints(openBestiary, 0, 0);
@@ -222,8 +231,11 @@ public class Game extends Application {
 
 		this.addDoorsToRooms();
 		testRoom[Room.getCurrentRoomY()][Room.getCurrentRoomX()].setLayout();
+		testRoom[Room.getCurrentRoomY()][Room.getCurrentRoomX()].placeChest(testChest[Room.getCurrentRoomY()][Room.getCurrentRoomX()][0]);
 		this.updateEnemies();
+		
 
+		
 		try {
 			testRoom[Room.getCurrentRoomY()][Room.getCurrentRoomX()].placeObject(testPlayer);
 		} catch (HitWallException e) {
