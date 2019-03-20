@@ -157,11 +157,19 @@ public class Game extends Application {
 		Text menuInfoText = new Text();
 
 		openBestiary.setOnAction(e -> {
-			
+			for (Enemy l : testEnemy[Room.getCurrentRoomY()][Room.getCurrentRoomY()]) {
+				menuInfoText.setText(l.toString() + "\n");
+			}
 		});
 
 		openInventory.setOnAction(e -> {
-			
+			System.out.print("Hello" + testPlayer.getInventory().size());
+			for (int i = 0; i < testPlayer.getInventory().size(); i++) {
+				if (i == 0)
+					menuInfoText.setText(testPlayer.getInventory().get(i).toString() + "\n");
+				else
+					menuInfoText.setText(menuInfoText.getText() + testPlayer.getInventory().get(i).toString() + "\n");
+			}
 		});
 
 		GridPane.setConstraints(openBestiary, 0, 0);
@@ -252,7 +260,7 @@ public class Game extends Application {
 				testPlayer.setPosX(testPlayer.getPrevX());
 			testRoom[Room.getCurrentRoomY()][Room.getCurrentRoomX()].getLayout()[testPlayer.getPosX()][testPlayer
 					.getPosY()] = testPlayer.icon;
-			testPlayer.addItems(testChest[Room.getCurrentRoomY()][Room.getCurrentRoomX()][0].getChestItems());
+			testPlayer.addItems(testChest[Room.getCurrentRoomY()][Room.getCurrentRoomX()][0]);
 			testChest[Room.getCurrentRoomY()][Room.getCurrentRoomX()][0].openChest();
 			logText.setText(logText.getText() + e.getMessage());
 		}catch (EnterNewRoomException e) {

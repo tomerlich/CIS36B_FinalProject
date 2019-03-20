@@ -21,7 +21,7 @@ public class Character extends Movement{
 		this.posY = posY;
 		this.prevY = posY;
 		this.name = name;
-		this.inventory = new ArrayList<Item>();
+		this.inventory = new ArrayList<Item>(0);
 	}
 
 	public int getPrevX() {
@@ -113,8 +113,10 @@ public class Character extends Movement{
 		}
 	}
 
-	public void addItems(ArrayList<Item> chestItems) {
-		this.inventory.addAll(chestItems);
+	public void addItems(Chest c) {
+		for (int i = 0; i < c.getChestItems().size(); i++) {
+			this.inventory.add(c.getChestItems().get(i));
+		}
 	}
 
 }
