@@ -1,12 +1,17 @@
 import java.io.File;
 import java.util.Random;
+import java.util.Scanner;
 
 import javafx.application.Application;
+import javafx.application.Platform;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
@@ -32,7 +37,7 @@ public class Game extends Application {
 	private Scene scene;
 	private VBox menuLayout, menuInfoLayout;
 	private static boolean[][] dungeonLayout;
-	private static Random r = new Random();
+	private static Random r;
 
 	public static void main(String[] Args) {
 		r = new Random();
@@ -88,7 +93,7 @@ public class Game extends Application {
 	public void start(Stage arg0) throws Exception {
 		arg0.setTitle("Angband 2019");
 		mapLayout = new GridPane();
-		testPlayer = new Character('@', 100000, 100, 4, 4, "name");
+		testPlayer = new Character('@', 500, 100, 4, 4, "name");
 		testEnemy = new Enemy[5][5][1];
 		testChest = new Chest[5][5][1];
 		for (int i = 0; i < testEnemy.length; i++) {
@@ -154,8 +159,13 @@ public class Game extends Application {
 	private void setMenuInfoLayout() {
 		Button openBestiary = new Button("Open Bestiary");
 		Button openInventory = new Button("Open Inventory");
+		Button equipItem = new Button("Equip Item");
+		Button useItem = new Button("Use Item");
 		Text menuInfoText = new Text();
+		TextField userChoiceText = new TextField("");
 
+		userChoiceText.setOnMouseClicked(e -> userChoiceText.clear());
+		
 		openBestiary.setOnAction(e -> {
 			for (Enemy l : testEnemy[Room.getCurrentRoomY()][Room.getCurrentRoomY()]) {
 				menuInfoText.setText(l.toString() + "\n");
@@ -163,23 +173,50 @@ public class Game extends Application {
 		});
 
 		openInventory.setOnAction(e -> {
-			System.out.print("Hello" + testPlayer.getInventory().size());
-			for (int i = 0; i < testPlayer.getInventory().size(); i++) {
-				if (i == 0)
-					menuInfoText.setText(testPlayer.getInventory().get(i).toString() + "\n");
-				else
-					menuInfoText.setText(menuInfoText.getText() + testPlayer.getInventory().get(i).toString() + "\n");
-			}
+			if (testPlayer.getInventory().size() != 0) {
+				for (int i = 0; i < testPlayer.getInventory().size(); i++) {
+					if (i == 0)
+						menuInfoText.setText(testPlayer.getInventory().get(i).toString() + "\n");
+					else
+						menuInfoText
+								.setText(menuInfoText.getText() + testPlayer.getInventory().get(i).toString() + "\n");
+					menuInfoText.setText(menuInfoText.getText() + "Item index: " + (i + 1) + "\n");
+				}
+			} else
+				menuInfoText.setText("You dont have anything in your inventory try opening a chest");
 		});
 
+		equipItem.setOnAction(e -> {
+			if ((testPlayer.getInventory().size() != 0) && !(userChoiceText.getText().equals(""))){
+				logText.setText(logText.getText() + "\nYou equipped an item");
+				testPlayer.equip(Integer.parseInt(userChoiceText.getText()) - 1);
+			} else if(testPlayer.getInventory().size() == 0)
+				menuInfoText.setText("You dont have anything in your inventory try opening a chest");
+			else 
+				menuInfoText.setText("Enter an item index first\nOpen inventory to view item indeces");
+		});
+		
+		useItem.setOnAction(e -> {
+			if ((testPlayer.getInventory().size() != 0) && !(userChoiceText.getText().equals(""))){
+				logText.setText(logText.getText() + "\nYou used an item");
+				testPlayer.equip(Integer.parseInt(userChoiceText.getText()) - 1);
+			} else if(testPlayer.getInventory().size() == 0)
+				menuInfoText.setText("You dont have anything in your inventory try opening a chest");
+			else 
+				menuInfoText.setText("Enter an item index first\nOpen inventory to view item indeces");
+		});
+		
 		GridPane.setConstraints(openBestiary, 0, 0);
 		GridPane.setConstraints(openInventory, 1, 0);
+		GridPane.setConstraints(equipItem, 2, 0);
+		GridPane.setConstraints(useItem, 3, 0);
 		menuInfoLayout.setMaxHeight(100);
 		menuInfoLayout.setMinHeight(100);
-		menuControlsLayout.getChildren().addAll(openBestiary, openInventory);
-		menuInfoLayout.getChildren().add(menuInfoText);
+		menuControlsLayout.getChildren().addAll(openBestiary, openInventory, equipItem, useItem);
+		menuInfoLayout.getChildren().addAll(userChoiceText, menuInfoText);
 		menuLayout.getChildren().addAll(menuControlsLayout, menuInfoLayout);
 	}
+	
 
 	/**
 	 * creates the keyboard controls for the game also listens for key presses
@@ -238,11 +275,10 @@ public class Game extends Application {
 
 		this.addDoorsToRooms();
 		testRoom[Room.getCurrentRoomY()][Room.getCurrentRoomX()].setLayout();
-		testRoom[Room.getCurrentRoomY()][Room.getCurrentRoomX()].placeChest(testChest[Room.getCurrentRoomY()][Room.getCurrentRoomX()][0]);
+		testRoom[Room.getCurrentRoomY()][Room.getCurrentRoomX()]
+				.placeChest(testChest[Room.getCurrentRoomY()][Room.getCurrentRoomX()][0]);
 		this.updateEnemies();
-		
 
-		
 		try {
 			testRoom[Room.getCurrentRoomY()][Room.getCurrentRoomX()].placeObject(testPlayer);
 		} catch (HitWallException e) {
@@ -253,7 +289,7 @@ public class Game extends Application {
 			testRoom[Room.getCurrentRoomY()][Room.getCurrentRoomX()].getLayout()[testPlayer.getPosX()][testPlayer
 					.getPosY()] = testPlayer.icon;
 			logText.setText(logText.getText() + e.getMessage());
-		}catch (ChestException e) {
+		} catch (ChestException e) {
 			if (testPlayer.getPosX() == testPlayer.getPrevX()) {
 				testPlayer.setPosY(testPlayer.getPrevY());
 			} else
@@ -263,9 +299,10 @@ public class Game extends Application {
 			testPlayer.addItems(testChest[Room.getCurrentRoomY()][Room.getCurrentRoomX()][0]);
 			testChest[Room.getCurrentRoomY()][Room.getCurrentRoomX()][0].openChest();
 			logText.setText(logText.getText() + e.getMessage());
-		}catch (EnterNewRoomException e) {
+		} catch (EnterNewRoomException e) {
 			this.loadRoom(e.getMessage());
-		} catch (Exception e1) {}
+		} catch (Exception e1) {
+		}
 
 		map = new Text[testRoom.length][][][];
 		for (int i = 0; i < map.length; i++) {
@@ -294,28 +331,27 @@ public class Game extends Application {
 	private void updateEnemies() {
 		for (Enemy l : testEnemy[Room.getCurrentRoomY()][Room.getCurrentRoomX()]) {
 			if (l.getHp() > 0) {
-			try {
-				l.move(testPlayer);
-				if (l.getPosX() == testPlayer.getPosX() && l.getPosY() == testPlayer.getPosY())
-					throw new CombatException("\nYou got in a fight with " + l.getName());
-				testRoom[Room.getCurrentRoomY()][Room.getCurrentRoomX()].placeObject(l);
-			}
-			catch (CombatException e) {
-				testPlayer.combatEvent(l);
-				if (l.getPosX() == l.getPrevX()) {
-					l.setPosY(l.getPrevY());
-				} else
-					l.setPosX(l.getPrevX());
-				testRoom[Room.getCurrentRoomY()][Room.getCurrentRoomX()].getLayout()[l.getPosX()][l
-						.getPosY()] = l.icon;
-				logText.setText(logText.getText() + e.getMessage());
-			}catch (Exception e) {
-				if (l.getPosX() == l.getPrevX()) {
-					l.setPosY(l.getPrevY());
-				} else
-					l.setPosX(l.getPrevX());
-				testRoom[Room.getCurrentRoomY()][Room.getCurrentRoomX()].getLayout()[l.getPosX()][l
-						.getPosY()] = l.icon;
+				try {
+					l.move(testPlayer);
+					if (l.getPosX() == testPlayer.getPosX() && l.getPosY() == testPlayer.getPosY())
+						throw new CombatException("\nYou got in a fight with " + l.getName());
+					testRoom[Room.getCurrentRoomY()][Room.getCurrentRoomX()].placeObject(l);
+				} catch (CombatException e) {
+					testPlayer.combatEvent(l);
+					if (l.getPosX() == l.getPrevX()) {
+						l.setPosY(l.getPrevY());
+					} else
+						l.setPosX(l.getPrevX());
+					testRoom[Room.getCurrentRoomY()][Room.getCurrentRoomX()].getLayout()[l.getPosX()][l
+							.getPosY()] = l.icon;
+					logText.setText(logText.getText() + e.getMessage());
+				} catch (Exception e) {
+					if (l.getPosX() == l.getPrevX()) {
+						l.setPosY(l.getPrevY());
+					} else
+						l.setPosX(l.getPrevX());
+					testRoom[Room.getCurrentRoomY()][Room.getCurrentRoomX()].getLayout()[l.getPosX()][l
+							.getPosY()] = l.icon;
 				}
 			}
 		}
@@ -404,8 +440,12 @@ public class Game extends Application {
 				.getPosY()] = testPlayer.icon;
 		for (Enemy e : testEnemy[Room.getCurrentRoomY()][Room.getCurrentRoomX()]) {
 			if (e.getHp() > 0) {
-			testRoom[Room.getCurrentRoomY()][Room.getCurrentRoomX()].getLayout()[e.getPosX()][e
-					.getPosY()] = e.icon;
+				testRoom[Room.getCurrentRoomY()][Room.getCurrentRoomX()].getLayout()[e.getPosX()][e.getPosY()] = e.icon;
+			}	
+		}
+		for (Chest e : testChest[Room.getCurrentRoomY()][Room.getCurrentRoomX()]) {
+			if (e.isFilled()) {
+				testRoom[Room.getCurrentRoomY()][Room.getCurrentRoomX()].getLayout()[7][7] = 'C';
 			}
 		}
 	}
@@ -469,7 +509,7 @@ public class Game extends Application {
 	 */
 	private void setInfoLayout() {
 		infoLayout.setPrefViewportHeight(500);
-		infoLayout.setPrefViewportWidth(500);
+		infoLayout.setPrefViewportWidth(200);
 		infoLayout.setContent(logText);
 	}
 }

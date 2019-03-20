@@ -4,6 +4,11 @@ import java.util.Random;
 //import hmmm.Character;
 
 public class Enemy extends Movement implements EnemyBehavior{
+	@Override
+	public String toString() {
+		return this.icon + ": " + this.getName() + "\nHP: " + this.getHp();
+	}
+
 	private int prevX, prevY;
 	public Enemy() {
 		this(' ', 0, 0, 0, 0, "no name");
