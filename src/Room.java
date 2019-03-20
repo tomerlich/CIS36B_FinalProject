@@ -119,8 +119,9 @@ public class Room {
 			Character c = (Character) o;
 			if (this.layout[c.getPosX()][c.getPosY()] == '#') {
 				throw new HitWallException("\nYou hit a wall");
-			}
-			if (this.layout[c.getPosX()][c.getPosY()] != ' ') {
+			} else if (this.layout[c.getPosX()][c.getPosY()] == 'C') {
+				throw new ChestException("\nYou got a chest");
+			} else if (this.layout[c.getPosX()][c.getPosY()] != ' ') {
 				throw new CombatException();
 			}
 			if (this.checkDoor(c.getPosX(), c.getPosY())) {

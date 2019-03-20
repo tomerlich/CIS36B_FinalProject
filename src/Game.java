@@ -100,7 +100,6 @@ public class Game extends Application {
 					testChest[i][j][g] = new Chest();
 					int chestSeed = r.nextInt(10000);
 					if ((chestSeed % 2) == 0) {
-						System.out.print(chestSeed + "hello\n");
 						testChest[i][j][g].fillChest();
 					}
 				}
@@ -246,10 +245,19 @@ public class Game extends Application {
 			testRoom[Room.getCurrentRoomY()][Room.getCurrentRoomX()].getLayout()[testPlayer.getPosX()][testPlayer
 					.getPosY()] = testPlayer.icon;
 			logText.setText(logText.getText() + e.getMessage());
-		} catch (EnterNewRoomException e) {
+		}catch (ChestException e) {
+			if (testPlayer.getPosX() == testPlayer.getPrevX()) {
+				testPlayer.setPosY(testPlayer.getPrevY());
+			} else
+				testPlayer.setPosX(testPlayer.getPrevX());
+			testRoom[Room.getCurrentRoomY()][Room.getCurrentRoomX()].getLayout()[testPlayer.getPosX()][testPlayer
+					.getPosY()] = testPlayer.icon;
+			testPlayer.addItems(testChest[Room.getCurrentRoomY()][Room.getCurrentRoomX()][0].getChestItems());
+			testChest[Room.getCurrentRoomY()][Room.getCurrentRoomX()][0].openChest();
+			logText.setText(logText.getText() + e.getMessage());
+		}catch (EnterNewRoomException e) {
 			this.loadRoom(e.getMessage());
-		} catch (Exception e1) {
-		}
+		} catch (Exception e1) {}
 
 		map = new Text[testRoom.length][][][];
 		for (int i = 0; i < map.length; i++) {

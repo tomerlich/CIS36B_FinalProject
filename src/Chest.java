@@ -55,6 +55,7 @@ public class Chest {
 	 */
 	public void openChest() {
 		open = true;
+		isFilled = false;
 	}
 
 	/**
@@ -192,6 +193,10 @@ public class Chest {
 		}
 	}
 
+
+	/**
+	 * @return if the chest is filled or not
+	 */
 	public boolean isFilled() {
 		return this.isFilled;
 	}

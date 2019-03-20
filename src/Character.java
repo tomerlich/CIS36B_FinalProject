@@ -113,4 +113,8 @@ public class Character extends Movement{
 		}
 	}
 
+	public void addItems(ArrayList<Item> chestItems) {
+		this.inventory.addAll(chestItems);
+	}
+
 }
